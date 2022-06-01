@@ -1,0 +1,12 @@
+$sec-text: #fff;
+$prim-bg: #121212;
+$misc: #6f5b3e;
+$icon: #b1d4e0;
+$head: #75e6da;
+$sec-bg: $head;
+$sec-text: $prim-bg;
+$prim-text: #00a0f3;
+@mixin prim-theme {
+    color: $prim-text;
+    background-color: $prim-bg;
+}

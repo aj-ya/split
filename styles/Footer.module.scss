@@ -1,0 +1,41 @@
+@use './themes' as th;
+.ft_ctnr {
+    display: flex;
+    bottom: 0;
+    left: 0;
+    height: 60px;
+    width: 100vw;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    padding-bottom: 5px;
+    @include th.prim-theme;
+    .pages {
+        // color: th.$prim-bg;
+        // background-color: th.$head;
+        width: 100%;
+        border-radius: 10px 10px 0px 0px;
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        height: 100%;
+        div {
+            a {
+                text-decoration: none;
+            }
+            width: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            aspect-ratio: 1;
+            border-radius: 50%;
+            box-shadow: 5px 5px 12px #070707, -5px -5px 12px #1d1d1d;
+            &:active,
+            &[data-isactive='true'] {
+                // background: #75e6da;
+                box-shadow: inset 5px 5px 12px #070707,
+                    inset -5px -5px 12px #1d1d1d;
+            }
+        }
+    }
+}

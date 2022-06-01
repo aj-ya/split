@@ -1,0 +1,84 @@
+@use 'themes' as th;
+.main {
+    padding: 4rem 0;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    @include th.prim-theme;
+    min-height: calc(100vh - 60px);
+}
+.form {
+    width: 300px;
+    height: 350px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    border-radius: 53px;
+    background: #121212;
+    box-shadow: 30px 30px 60px #070707, -30px -30px 60px #1d1d1d;
+    div {
+        margin: 20px 0px;
+        font-size: 1em !important;
+        label {
+            width: 200px;
+            display: block;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            color: th.$head;
+            margin: 20px 15px;
+        }
+        input {
+            all: unset;
+            width: 200px;
+            height: 30px;
+            padding: 2px 5px;
+            border-radius: 20px;
+            background: #121212;
+            box-shadow: 8px 8px 14px #070707, -8px -8px 14px #1d1d1d;
+            &:-webkit-autofill,
+            &:-webkit-autofill:hover {
+                -webkit-text-fill-color: th.$prim-text;
+                box-shadow: 8px 8px 14px #070707, -8px -8px 14px #1d1d1d !important;
+                transition: background-color 5000s ease-in-out 0s;
+            }
+            &:-webkit-autofill:focus,
+            &:-webkit-autofill:active {
+                -webkit-text-fill-color: th.$prim-text;
+                box-shadow: inset 8px 8px 14px #070707,
+                    inset -8px -8px 14px #1d1d1d;
+                transition: background-color 5000s ease-in-out 0s;
+            }
+
+            &:focus {
+                background: #121212;
+                box-shadow: inset 8px 8px 14px #070707,
+                    inset -8px -8px 14px #1d1d1d;
+            }
+            &::after {
+                background: #121212;
+            }
+        }
+    }
+}
+
+.button {
+    outline: 0px;
+    border: none;
+    width: 50px;
+    color: th.$head;
+    font-size: 1.1em;
+    font-weight: 600;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: #121212;
+    box-shadow: 5px 5px 10px #070707, -5px -5px 10px #1d1d1d;
+    margin-left: auto;
+    margin-right: 20px;
+    &:active {
+        background: #121212;
+        box-shadow: inset 5px 5px 10px #070707, inset -5px -5px 10px #1d1d1d;
+    }
+}

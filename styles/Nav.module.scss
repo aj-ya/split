@@ -1,0 +1,43 @@
+@use './themes' as th;
+.nav_ctnr {
+    width: 100vw;
+    height: 80px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    @include th.prim_theme;
+    padding: 10px 10px;
+    .greeting {
+        width: 30%;
+        font-size: 1em;
+        font-weight: 800;
+        text-transform: capitalize;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 5px;
+        padding: 5px 8px;
+        border-radius: 10px;
+    }
+    .pages {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: fit-content;
+        gap: 10px;
+        margin-right: 0px;
+        margin-left: auto;
+        div {
+            a {
+                text-decoration: none;
+            }
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            width: 45px;
+            aspect-ratio: 1;
+            border-radius: 10px;
+        }
+    }
+}
