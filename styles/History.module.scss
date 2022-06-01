@@ -1,0 +1,28 @@
+@use './themes' as th;
+.pagetitle {
+    margin-bottom: 2rem;
+}
+.linklist {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    flex-direction: column;
+    gap: 10px;
+    .linkbox {
+        height: 40px;
+        width: 200px;
+        display: flex;
+        align-items: center;
+        border-radius: 7px;
+        border: 1px solid th.$prim-text;
+        padding-left: 10px;
+    }
+    .forwardicon {
+        color: th.$icon;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 10px;
+        margin-left: auto;
+    }
+}
