@@ -5,11 +5,11 @@
     "scripts": {
         "dev": "next dev",
         "build": "next build",
-        "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx}\"",
-        "format:check": "prettier --check \"src/**/*.{js,jsx,ts,tsx}\"",
+        "format": "prettier --write \"components/**/*.{js,jsx,ts,tsx}\" \"pages/**/*.{js,jsx,ts,tsx}\"",
+        "format:check": "prettier --check  \"components/**/*.{js,jsx,ts,tsx}\" \"pages/**/*.{js,jsx,ts,tsx}\"",
         "test": "echo \"Error: no test specified\" && exit 1",
-        "lint": "eslint  \"src/**/*.{js,jsx,ts,tsx}\"",
-        "lint:quiet": "eslint  \"src/**/*.{js,jsx,ts,tsx}\"  --quiet"
+        "lint": "eslint   \"components/**/*.{js,jsx,ts,tsx}\" \"pages/**/*.{js,jsx,ts,tsx}\"",
+        "lint:quiet": "eslint   \"components/**/*.{js,jsx,ts,tsx}\" \"pages/**/*.{js,jsx,ts,tsx}\"  --quiet"
     },
     "dependencies": {
         "@headlessui/react": "^1.6.3",
