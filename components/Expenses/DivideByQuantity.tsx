@@ -37,16 +37,19 @@ const DivideByQuantity = () => {
         if (!splits.includes(potential)) {
             addSplits([...splits, potential]);
         }
+        // @ts-ignore
         quantity[potential] = 1;
         setQuantity(quantity);
         // console.log(quantity);
     };
     const handleSubmit = (e: SyntheticEvent) => {
         e.preventDefault();
+        // @ts-ignore
         const finalArray = [];
         Object.keys(quantity).forEach((el) => {
             finalArray.push({
                 name: el,
+                // @ts-ignore
                 payable: quantity[el] * parseInt(costRef.current.value),
             });
         });
@@ -56,6 +59,7 @@ const DivideByQuantity = () => {
             type: 'bulk',
             cost: parseInt(costRef.current.value),
             date: dateRef.current.value,
+            // @ts-ignore
             breakup: finalArray,
         };
         console.log(JSON.stringify(finalData));
@@ -63,6 +67,7 @@ const DivideByQuantity = () => {
     const QuantityHandler = (e: ChangeEvent<HTMLInputElement>) => {
         e.preventDefault();
         let prop = e.target.getAttribute('data-correspondsto') || 'ajeya';
+        // @ts-ignore
         quantity[prop] = e.target.value || 0;
         setQuantity(quantity);
         // console.log(quantity);
@@ -81,6 +86,7 @@ const DivideByQuantity = () => {
                             onBlur={QuantityHandler}
                             type="number"
                             defaultValue={
+                                // @ts-ignore
                                 `${quantity[el] ? quantity[el] : '1'}` || '1'
                             }
                             step="0.1"
@@ -92,6 +98,7 @@ const DivideByQuantity = () => {
                             onClick={(e: SyntheticEvent) => {
                                 let curr = document.getElementById(el);
                                 let txt = (curr as any).innerText;
+                                // @ts-ignore
                                 delete quantity[txt];
                                 setQuantity(quantity);
                                 const result = splits.filter(

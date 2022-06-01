@@ -3,9 +3,19 @@ import { useState, useEffect } from 'react';
 import { MdCheck, MdCheckBox, MdCheckBoxOutlineBlank } from 'react-icons/md';
 import styles from '../../styles/ExpenseHistory.module.scss';
 
+type ExpenseType = {
+    expenseId: number;
+    creater: string;
+    title: string;
+    cost: number;
+    type: string;
+    date: string;
+    paid: boolean;
+    breakup: Array<{ name: string; payable: number }>;
+};
 const ExpenseHistory: NextPage = () => {
     const [user, setUser] = useState<string>('');
-    const [ExpenseData, setExpenseData] = useState([
+    const [ExpenseData, setExpenseData] = useState<Array<ExpenseType>>([
         {
             expenseId: 232,
             creater: 'ajeya',
@@ -33,6 +43,7 @@ const ExpenseHistory: NextPage = () => {
             paid: true,
         },
         {
+            expenseId: 231,
             creater: 'ajeya',
             title: 'Goa Trip',
             type: 'single',
@@ -44,8 +55,10 @@ const ExpenseHistory: NextPage = () => {
                 { name: 'Karthik', payable: 3000 },
                 { name: 'Kempya', payable: 3000 },
             ],
+            paid: false,
         },
         {
+            expenseId: 231,
             creater: 'ajeya',
             title: 'Smoodh',
             type: 'bulk',
@@ -56,18 +69,19 @@ const ExpenseHistory: NextPage = () => {
                 { name: 'Sushant', payable: 24 },
                 { name: 'Shivgond', payable: 12 },
             ],
+            paid: true,
         },
     ]);
     useEffect(() => {
         setUser(localStorage.getItem('login') as string);
     }, []);
-    const ComputeTotalPrice = (props) => {
+    const ComputeTotalPrice = (props: { data: any }) => {
         const { data } = props;
         if (data.type === 'single') {
             return <div className={styles.totalPrice}>&#8377; {data.cost}</div>;
         } else {
             let totalPrice = 0;
-            data.breakup.forEach((el) => {
+            data.breakup.forEach((el: { name: string; payable: number }) => {
                 totalPrice += el.payable;
             });
             return (
@@ -75,7 +89,7 @@ const ExpenseHistory: NextPage = () => {
             );
         }
     };
-    const ExpandableListItem = (props) => {
+    const ExpandableListItem = (props: any) => {
         const { activeItem, setActiveItem, itemKey, data, setData } = props;
         const active = activeItem === itemKey;
         // const handlePaid = (txId) => {
@@ -94,14 +108,16 @@ const ExpenseHistory: NextPage = () => {
                     <ComputeTotalPrice data={data} />
                 </div>
                 <div className={styles.lidesc} data-isactive={active}>
-                    {data.breakup.map((el) => (
-                        <span key={el.name} className={styles.breakupitem}>
-                            <span>{el.name}</span>:&nbsp;
-                            <span className={styles.payable}>
-                                &#x20B9;{el.payable}
+                    {data.breakup.map(
+                        (el: { name: string; payable: number }) => (
+                            <span key={el.name} className={styles.breakupitem}>
+                                <span>{el.name}</span>:&nbsp;
+                                <span className={styles.payable}>
+                                    &#x20B9;{el.payable}
+                                </span>
                             </span>
-                        </span>
-                    ))}
+                        )
+                    )}
                 </div>
                 {/* <div>
                     {
@@ -125,7 +141,7 @@ const ExpenseHistory: NextPage = () => {
         );
     };
 
-    const MapExpenses = (props) => {
+    const MapExpenses = (props: any) => {
         return (
             <ul className={styles.list}>
                 {ExpenseData.map((element, index) => {

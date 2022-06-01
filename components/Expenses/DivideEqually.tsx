@@ -27,6 +27,7 @@ const DivideEqually = () => {
     }, []);
     console.log(splits);
     const processArray = (a: Array<string>) => {
+        // @ts-ignore
         const newArr = [];
         const share = parseInt(costRef.current.value) / splits.length;
         splits.forEach((el) => {
@@ -35,6 +36,7 @@ const DivideEqually = () => {
                 payable: share,
             });
         });
+        // @ts-ignore
         return newArr;
     };
     const titleRef = useRef() as React.MutableRefObject<HTMLInputElement>;
