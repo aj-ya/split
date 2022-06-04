@@ -82,7 +82,7 @@ const Payments: NextPage = () => {
                     <button className={styles.payButton} onClick={handlePay}>
                         {/* <div>Pay</div> */}
                         <a
-                            href="upi://pay?pa=UPIID@oksbi&amp;pn=JOHN BRITAS AK &amp;cu=INR"
+                            href="upi://pay?pa=ajeybhat82@oksbi&amp;pn=Ajeya Bhat&amp;cu=INR&amp;am=10&amp;tr=1234ABCD"
                             className="upi-pay1"
                         >
                             Pay Now !
