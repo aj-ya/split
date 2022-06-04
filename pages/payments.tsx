@@ -19,9 +19,7 @@ type PaymentTxType = {
     payable: number;
 };
 const Payments: NextPage = () => {
-    const handlePay = () => {
-        
-    };
+    const handlePay = () => {};
     const [user, setUser] = useState<string>('');
     const [ExpenseData, setExpenseData] = useState<Array<PaymentTxType>>([
         {
@@ -82,7 +80,13 @@ const Payments: NextPage = () => {
                 <div className={styles.lidesc} data-isactive={active}>
                     <div className={styles.date}>{data.date}</div>
                     <button className={styles.payButton} onClick={handlePay}>
-                        <div>Pay</div>
+                        {/* <div>Pay</div> */}
+                        <a
+                            href="upi://pay?pa=UPIID@oksbi&amp;pn=JOHN BRITAS AK &amp;cu=INR"
+                            className="upi-pay1"
+                        >
+                            Pay Now !
+                        </a>
                         <MdArrowForward size="15px" />
                     </button>
                 </div>
