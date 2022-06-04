@@ -1,0 +1,99 @@
+@use './themes' as th;
+
+.container {
+    min-height: calc(100vh - 60px);
+    padding-bottom: 60px;
+    min-width: 100vw;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+.main {
+    width: 320px;
+    padding: 20px 10px;
+    display: flex;
+    height: max-content;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    @include th.prim-theme;
+    border-radius: 20px;
+    background: #121212;
+    box-shadow: 15px 15px 30px #070707, -15px -15px 30px #1d1d1d;
+}
+.pagetitle {
+    width: 100%;
+    text-align: center;
+    margin: 30px 0px;
+    color: th.$head;
+}
+.list {
+    list-style-type: none;
+    width: 100%;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 5px;
+    .listItem {
+        border: 1px solid th.$prim-text;
+        // background-color: th.$head;
+        color: th.$icon;
+        border-radius: 5px;
+        width: 100%;
+        padding: 6px 10px;
+        .toprow {
+            width: 100%;
+            display: inline-flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0px 3px;
+            .title {
+                font-size: 1.1rem;
+                text-align: left;
+                width: 35%;
+            }
+            .totalPrice {
+                text-align: right;
+                width: 30%;
+            }
+        }
+        .lidesc {
+            display: none;
+            &[data-isactive='true'] {
+                margin: 8px 0 4px 0;
+                display: flex;
+                flex-wrap: wrap;
+                animation: fade-in 1s;
+                width: 100%;
+                align-items: center;
+                gap: 10px;
+                .date {
+                    width: 35%;
+                }
+                .payButton {
+                    all: unset;
+                    height: 20px;
+                    aspect-ratio: 3;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    margin-right: 0px;
+                    border-radius: 10px;
+                    margin-left: auto;
+                    @include th.prim_theme;
+                    background: #121212;
+                    box-shadow: 3px 3px 6px #070707, -3px -3px 6px #1d1d1d;
+                    gap: 3px;
+                    &:active {
+                        background: #121212;
+                        box-shadow: inset 3px 3px 6px #070707,
+                            inset -3px -3px 6px #1d1d1d;
+                    }
+                }
+                // justify-content: space-around;
+            }
+        }
+    }
+}

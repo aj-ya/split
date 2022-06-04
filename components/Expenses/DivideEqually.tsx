@@ -55,6 +55,7 @@ const DivideEqually = () => {
             breakup: processArray(splits),
         };
         console.log(JSON.stringify(expenseInfo));
+        //to database
     };
     const SplitHandler = (e: SyntheticEvent) => {
         e.preventDefault();

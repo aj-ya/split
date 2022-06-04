@@ -17,19 +17,6 @@ const ExpenseHistory: NextPage = () => {
     const [user, setUser] = useState<string>('');
     const [ExpenseData, setExpenseData] = useState<Array<ExpenseType>>([
         {
-            expenseId: 232,
-            creater: 'ajeya',
-            title: 'hello',
-            type: 'bulk',
-            cost: 10,
-            date: '2022-06-14',
-            breakup: [
-                { name: 'Shivgond', payable: 10 },
-                { name: 'Karthik', payable: 20 },
-            ],
-            paid: false,
-        },
-        {
             expenseId: 231,
             creater: 'ajeya',
             title: 'asd',
@@ -41,6 +28,20 @@ const ExpenseHistory: NextPage = () => {
                 { name: 'Ajeya', payable: 15 },
             ],
             paid: true,
+        },
+        {
+            expenseId: 232,
+            creater: 'ajeya',
+            title: 'Summers',
+            type: 'bulk',
+            cost: 500,
+            date: '2022-06-14',
+            breakup: [
+                { name: 'Vishal', payable: 3000 },
+                { name: 'Pradeep', payable: 1500 },
+                { name: 'Sushant', payable: 3000 },
+            ],
+            paid: false,
         },
         {
             expenseId: 231,
