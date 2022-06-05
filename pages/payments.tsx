@@ -68,7 +68,9 @@ const Payments: NextPage = () => {
                                 userData[data.creator]
                             }&amp;pn=${data.creator}&amp;cu=INR&amp;am=${
                                 data.payable
-                            }&amp;tr=smthn53212`}
+                            }&amp;tn=${
+                                data.title + ' ' + data.date
+                            }&amp;tr=unique`}
                             className="upi-pay1"
                         >
                             Pay
