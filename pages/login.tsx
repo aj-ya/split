@@ -7,28 +7,31 @@ interface LoginData {
     pass: string;
 }
 const Login: NextPage = () => {
+    const [isAuth, setAuth] = useState(false);
     const router = useRouter();
     const usernameRef = useRef() as React.MutableRefObject<HTMLInputElement>;
     const passwordRef = useRef() as React.MutableRefObject<HTMLInputElement>;
-    const [userInfo, setUserInfo] = useState<LoginData>({
-        name: '',
-        pass: '',
-    });
+
     const handleSubmit = async (e: SyntheticEvent) => {
         e.preventDefault();
-        setUserInfo({
+        const userInfo = {
             name: usernameRef.current.value,
             pass: passwordRef.current.value,
-        });
+        };
         const res = await fetch('/api/login', {
             method: 'POST',
             body: JSON.stringify(userInfo),
         }).then((res) => res.json());
-        if (res.present) {
+        if (await res.present) {
             localStorage.setItem('login', userInfo.name);
-            router.push('/');
+            setAuth(true);
         }
     };
+    useEffect(() => {
+        if (isAuth) {
+            router.push('/');
+        }
+    }, [isAuth]);
     return (
         <main className={styles.main}>
             <form

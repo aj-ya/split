@@ -38,6 +38,13 @@ export default async function handler(
 
             res.status(200).json(all_expenses);
         }
+        if (req.method == 'DELETE') {
+            let objID = req.body;
+            // console.log(objID);
+            await expeneses.deleteOne({ _id: new ObjectId(objID) });
+            // console.log(objID);
+            res.status(200).send('yes');
+        }
     } catch {
         res.status(400).send('no');
     }

@@ -10,6 +10,8 @@ export default async function handler(
     console.log(user_pass);
     const { db } = await connectToDatabase();
     const users = await db.collection('users');
-    console.log(await users.countDocuments(user_pass));
-    res.status(200).send({ present: true });
+    const n = await users.countDocuments(user_pass);
+    console.log(n);
+    if (n > 0) res.status(200).json({ present: true });
+    else res.status(400).json({ present: false });
 }

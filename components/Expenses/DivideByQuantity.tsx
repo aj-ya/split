@@ -54,7 +54,7 @@ const DivideByQuantity = () => {
             date: dateRef.current.value,
             // @ts-ignore
             breakup: finalArray,
-            paid: false,
+            paid: [],
         };
         const res = await fetch('/api/expenses', {
             method: 'POST',

@@ -9,6 +9,7 @@ import {
     MdCheckBoxOutlineBlank,
     MdDeleteOutline,
 } from 'react-icons/md';
+import DivideByQuantity from '../../components/Expenses/DivideByQuantity';
 import styles from '../../styles/ExpenseHistory.module.scss';
 import theme from '../../utils/themes';
 
@@ -19,11 +20,12 @@ type ExpenseType = {
     cost: number;
     type: string;
     date: string;
-    paid: boolean;
+    paid: string[];
     breakup: Array<{ name: string; payable: number }>;
     _id: string;
 };
 const ExpenseHistory: NextPage = () => {
+    const [modalIsOpen, setModal] = useState(false);
     const [ExpenseData, setExpenseData] = useState<Array<ExpenseType>>([
         {
             _id: '2131231241241g',
@@ -37,17 +39,25 @@ const ExpenseHistory: NextPage = () => {
                 { name: 'Shivgond', payable: 15 },
                 { name: 'Ajeya', payable: 15 },
             ],
-            paid: true,
+            paid: ['shivgond'],
         },
     ]);
 
-    useEffect(() => {
-        async function getDetails() {
-            const resE = await fetch(
-                `/api/expenses?user=${localStorage.getItem('login')}`
-            ).then((res) => res.json());
-            setExpenseData(resE);
+    async function getDetails() {
+        const resE = await fetch(
+            `/api/expenses?user=${localStorage.getItem('login')}`
+        ).then((res) => res.json());
+        setExpenseData(resE);
+    }
+    async function markPaid(txid: string, name: string) {
+        const resM = await fetch(
+            `/api/markPaid?tx_id=${txid}&name=${name}`
+        ).then((res) => res.json());
+        if (resM.job == 'done.') {
+            await getDetails();
         }
+    }
+    useEffect(() => {
         getDetails();
     }, []);
     const ComputeTotalPrice = (props: { data: any }) => {
@@ -74,7 +84,6 @@ const ExpenseHistory: NextPage = () => {
             <li className={styles.listItem}>
                 <div className={styles.toprow}>
                     <div className={styles.title}>{data.title}</div>
-
                     <ComputeTotalPrice data={data} />
                     <button
                         className={styles.dropdown}
@@ -91,19 +100,35 @@ const ExpenseHistory: NextPage = () => {
                 </div>
                 <div className={styles.lidesc} data-isactive={active}>
                     <div className={styles.breakup}>
-                        {data.breakup.map(
-                            (el: { name: string; payable: number }) => (
-                                <span
-                                    key={el.name}
-                                    className={styles.breakupitem}
-                                >
-                                    <span>{el.name}</span>:&nbsp;
-                                    <span className={styles.payable}>
-                                        &#x20B9;{el.payable}
+                        <IconContext.Provider
+                            value={{ size: '15px', color: theme.icon }}
+                        >
+                            {data.breakup.map(
+                                (el: { name: string; payable: number }) => (
+                                    <span
+                                        key={el.name}
+                                        className={styles.breakupitem}
+                                    >
+                                        <span>{el.name}</span>:&nbsp;
+                                        <span className={styles.payable}>
+                                            &#x20B9;{el.payable}
+                                        </span>
+                                        <button
+                                            onClick={() => {
+                                                markPaid(data._id, el.name);
+                                            }}
+                                            className={`${styles.button} ${styles.checkboxbutton}`}
+                                        >
+                                            {data.paid.includes(el.name) ? (
+                                                <MdCheckBox />
+                                            ) : (
+                                                <MdCheckBoxOutlineBlank />
+                                            )}
+                                        </button>
                                     </span>
-                                </span>
-                            )
-                        )}
+                                )
+                            )}
+                        </IconContext.Provider>
                     </div>
                     <IconContext.Provider
                         value={{ size: '25px', color: theme.icon }}
@@ -111,15 +136,24 @@ const ExpenseHistory: NextPage = () => {
                         <div className={styles.actionrow}>
                             <div className={styles.date}>{data.date}</div>
                             <div className={styles.actionButtons}>
-                                <button className={styles.button}>
+                                <button
+                                    className={styles.button}
+                                    onClick={async () => {
+                                        if (window.confirm('Are you sure?')) {
+                                            const res = await fetch(
+                                                '/api/expenses',
+                                                {
+                                                    method: 'DELETE',
+                                                    body: data._id,
+                                                }
+                                            );
+                                            if (res.status === 200) {
+                                                await getDetails();
+                                            }
+                                        }
+                                    }}
+                                >
                                     <MdDeleteOutline />
-                                </button>
-                                <button className={styles.button}>
-                                    {data.paid ? (
-                                        <MdCheckBox />
-                                    ) : (
-                                        <MdCheckBoxOutlineBlank />
-                                    )}
                                 </button>
                             </div>
                         </div>
@@ -175,6 +209,11 @@ const ExpenseHistory: NextPage = () => {
                     setActiveItem={setActiveItem}
                 />
             </main>
+            {/* <div className={styles.modal}>
+                <div className={styles.modalBox}>
+                    <h3 className={styles.modalTitle}>Are you sure?</h3>
+                </div>
+            </div> */}
         </div>
     );
 };

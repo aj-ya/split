@@ -43,7 +43,7 @@ const DivideEqually = () => {
             date: dateRef.current.value,
             cost: parseInt(costRef.current.value),
             breakup: processArray(splits),
-            paid: false,
+            paid: [],
         };
         const res = await fetch('/api/expenses', {
             method: 'POST',
