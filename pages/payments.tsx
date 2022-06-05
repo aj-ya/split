@@ -70,7 +70,7 @@ const Payments: NextPage = () => {
                             pn=${data.creator}&amp;
                             cu=INR&amp;
                             am=${data.payable}&amp;
-                            tn=${data.title + ' ' + data.date}&amp;tr=213123`}
+                            tn=${data.title + ' ' + data.date}`}
                             className="upi-pay1"
                         >
                             Pay
