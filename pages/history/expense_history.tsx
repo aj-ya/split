@@ -25,7 +25,6 @@ type ExpenseType = {
     _id: string;
 };
 const ExpenseHistory: NextPage = () => {
-    const [modalIsOpen, setModal] = useState(false);
     const [ExpenseData, setExpenseData] = useState<Array<ExpenseType>>([
         {
             _id: '2131231241241g',
@@ -199,16 +198,19 @@ const ExpenseHistory: NextPage = () => {
     };
 
     const [activeItem, setActiveItem] = useState(0);
-
     return (
         <div className={styles.container}>
             <h2 className={styles.pagetitle}>Expense History</h2>
-            <main className={styles.main}>
-                <MapExpenses
-                    activeItem={activeItem}
-                    setActiveItem={setActiveItem}
-                />
-            </main>
+            {ExpenseData.length > 0 ? (
+                <main className={styles.main}>
+                    <MapExpenses
+                        activeItem={activeItem}
+                        setActiveItem={setActiveItem}
+                    />
+                </main>
+            ) : (
+                <h3>None</h3>
+            )}
             {/* <div className={styles.modal}>
                 <div className={styles.modalBox}>
                     <h3 className={styles.modalTitle}>Are you sure?</h3>
