@@ -66,13 +66,11 @@ const Payments: NextPage = () => {
                             href={`upi://pay?pa=${
                                 //@ts-ignore
                                 userData[data.creator]
-                            }&amp;pn=${data.creator}&amp;cu=INR&amp;am=${
-                                data.payable
-                            }&amp;tn=${
-                                data.title + ' ' + data.date
-                            }&amp;tr=unique&amp;url=https://${
-                                window.location.host
-                            }/api/transactions?txid=${data._id}`}
+                            }&amp;
+                            pn=${data.creator}&amp;
+                            cu=INR&amp;
+                            am=${data.payable}&amp;
+                            tn=${data.title + ' ' + data.date}&amp;`}
                             className="upi-pay1"
                         >
                             Pay
