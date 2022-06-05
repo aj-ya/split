@@ -5,6 +5,7 @@
     border-radius: 35px;
     background: #121212;
     box-shadow: inset 10px 10px 20px #070707, inset -10px -10px 20px #1d1d1d;
+    overflow-y: scroll;
 }
 .list {
     width: 300px;
@@ -32,6 +33,11 @@
     }
     .name {
         text-transform: capitalize;
+    }
+    .vpa {
+        margin-right: 10px;
+        margin-left: auto;
+        font-size: 0.7em;
     }
 }
 

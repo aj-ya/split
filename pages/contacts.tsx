@@ -16,6 +16,7 @@ const MapContacts = (props: any) => {
                             <MdAccountCircle />
                         </div>
                         <h3 className={styles.name}>{el.name}</h3>
+                        <div className={styles.vpa}>{el.vpa}</div>
                     </li>
                 );
             })}
@@ -63,6 +64,7 @@ export async function getStaticProps() {
         all_users.push({
             _id: new ObjectId(doc._id).toString(),
             name: doc.name,
+            vpa: doc.vpa,
             id: doc.id,
         });
     });
