@@ -9,21 +9,11 @@ import styles from '../../styles/Expenses.module.scss';
 import { MdAdd, MdArrowForward, MdClear } from 'react-icons/md';
 import { IconContext } from 'react-icons/lib';
 import theme from '../../utils/themes';
-const Users = ['Shivgond', 'Sushant', 'Ajeya', 'Karthik', 'Kempya', 'Chikkya'];
-const MapUsers = (props: any) => {
-    const selectref: React.MutableRefObject<HTMLSelectElement> =
-        props.selectref;
-    return (
-        <select name="adds" ref={selectref} className={styles.select}>
-            {Users.map((el) => (
-                <option key={el} value={el}>
-                    {el}
-                </option>
-            ))}
-        </select>
-    );
-};
+import MapUsers from './MapUsers';
+import { useRouter } from 'next/router';
+
 const DivideByQuantity = () => {
+    const router = useRouter();
     const [user, setUser] = useState<string>('');
     const titleRef = useRef() as React.MutableRefObject<HTMLInputElement>;
     const costRef = useRef() as React.MutableRefObject<HTMLInputElement>;
@@ -42,7 +32,7 @@ const DivideByQuantity = () => {
         setQuantity(quantity);
         // console.log(quantity);
     };
-    const handleSubmit = (e: SyntheticEvent) => {
+    const handleSubmit = async (e: SyntheticEvent) => {
         e.preventDefault();
         // @ts-ignore
         const finalArray = [];
@@ -50,19 +40,29 @@ const DivideByQuantity = () => {
             finalArray.push({
                 name: el,
                 // @ts-ignore
-                payable: quantity[el] * parseInt(costRef.current.value),
+                payable: parseFloat(
+                    // @ts-ignore
+                    (quantity[el] * parseInt(costRef.current.value)).toFixed(2)
+                ),
             });
         });
         const finalData = {
-            creater: user,
+            creator: user,
             title: titleRef.current.value,
             type: 'bulk',
             cost: parseInt(costRef.current.value),
             date: dateRef.current.value,
             // @ts-ignore
             breakup: finalArray,
+            paid: false,
         };
-        console.log(JSON.stringify(finalData));
+        const res = await fetch('/api/expenses', {
+            method: 'POST',
+            body: JSON.stringify(finalData),
+        });
+        if (res.status == 200) {
+            router.push('/');
+        }
     };
     const QuantityHandler = (e: ChangeEvent<HTMLInputElement>) => {
         e.preventDefault();

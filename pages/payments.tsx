@@ -11,52 +11,33 @@ import {
 import styles from '../styles/Payments.module.scss';
 
 type PaymentTxType = {
-    expenseId: number;
-    creater: string;
+    _id: string;
+    creator: string;
     title: string;
     date: string;
-    account: string;
     payable: number;
+    vpa: '';
 };
 const Payments: NextPage = () => {
     const handlePay = () => {};
-    const [user, setUser] = useState<string>('');
-    const [ExpenseData, setExpenseData] = useState<Array<PaymentTxType>>([
-        {
-            expenseId: 231,
-            creater: 'ajeya',
-            title: 'asd',
-            account: '',
-            date: '2022-06-21',
-            payable: 30,
-        },
-        {
-            expenseId: 232,
-            creater: 'ajeya',
-            title: 'Summers',
-            date: '2022-06-14',
-            payable: 300,
-            account: '',
-        },
-        {
-            expenseId: 231,
-            creater: 'ajeya',
-            title: 'Goa Trip',
-            account: '',
-            date: '2022-02-15',
-            payable: 12000,
-        },
-        {
-            expenseId: 231,
-            creater: 'ajeya',
-            title: 'Smoodh',
-            payable: 12,
-            date: '2022-05-11',
-            account: '',
-        },
-    ]);
+    const [paymentData, setPaymentData] = useState<Array<PaymentTxType>>([]);
+    const [userData, setUsersData] = useState({});
     useEffect(() => {
-        setUser(localStorage.getItem('login') as string);
+        async function getDetails() {
+            const resP = await fetch(
+                `/api/payments?user=${localStorage.getItem('login')}`
+            ).then((res) => res.json());
+            console.log(resP);
+            setPaymentData(JSON.parse(resP).payments);
+            const resU = await fetch('/api/users').then((res) => res.json());
+            const obj = {};
+            resU.forEach((el: any) => {
+                //@ts-ignore
+                obj[el.name as string] = el.vpa || '';
+            });
+            setUsersData(obj);
+        }
+        getDetails();
     }, []);
     const ExpandableListItem = (props: any) => {
         const { activeItem, setActiveItem, itemKey, data, setData } = props;
@@ -82,10 +63,15 @@ const Payments: NextPage = () => {
                     <button className={styles.payButton} onClick={handlePay}>
                         {/* <div>Pay</div> */}
                         <a
-                            href="upi://pay?pa=ajeybhat82@oksbi&amp;pn=Ajeya Bhat&amp;cu=INR&amp;am=10&amp;tr=1234ABCD"
+                            href={`upi://pay?pa=${
+                                //@ts-ignore
+                                userData[data.creator]
+                            }&amp;pn=${data.creator}&amp;cu=INR&amp;am=${
+                                data.payable
+                            }&amp;tr=smthn53212`}
                             className="upi-pay1"
                         >
-                            Pay Now !
+                            Pay
                         </a>
                         <MdArrowForward size="15px" />
                     </button>
@@ -97,7 +83,7 @@ const Payments: NextPage = () => {
     const MapExpenses = (props: any) => {
         return (
             <ul className={styles.list}>
-                {ExpenseData.map((element, index) => {
+                {paymentData.map((element, index) => {
                     return (
                         <ExpandableListItem
                             {...props}
@@ -116,12 +102,16 @@ const Payments: NextPage = () => {
     return (
         <div className={styles.container}>
             <h2 className={styles.pagetitle}>Outstanding Payments</h2>
-            <main className={styles.main}>
-                <MapExpenses
-                    activeItem={activeItem}
-                    setActiveItem={setActiveItem}
-                />
-            </main>
+            {paymentData.length > 0 ? (
+                <main className={styles.main}>
+                    <MapExpenses
+                        activeItem={activeItem}
+                        setActiveItem={setActiveItem}
+                    />
+                </main>
+            ) : (
+                <h3>None</h3>
+            )}
         </div>
     );
 };

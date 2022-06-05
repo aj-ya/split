@@ -7,8 +7,8 @@ import {
     MdRequestPage,
     MdContacts,
     MdHistoryEdu,
-    MdSettings,
 } from 'react-icons/md';
+import { AiOutlineLogout } from 'react-icons/ai';
 import { IconContext } from 'react-icons';
 import theme from '../utils/themes';
 import { useRouter } from 'next/router';
@@ -19,9 +19,14 @@ const Home: NextPage = () => {
         <div className="container">
             <IconContext.Provider value={{ color: theme.icon, size: '30' }}>
                 <header className={styles.header}>
-                    <Link href="/settings">
-                        <a className={styles.settings}>
-                            <MdSettings />
+                    <Link href="/">
+                        <a
+                            className={styles.settings}
+                            onClick={() => {
+                                localStorage.removeItem('login');
+                            }}
+                        >
+                            <AiOutlineLogout size="25px" />
                         </a>
                     </Link>
                 </header>

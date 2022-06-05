@@ -1,25 +1,13 @@
 import styles from '../../styles/Expenses.module.scss';
 import { useRef, useState, SyntheticEvent, useEffect } from 'react';
 import { MdAdd, MdArrowForward, MdCancel } from 'react-icons/md';
-import { format } from 'path';
 import { IconContext } from 'react-icons';
 import theme from '../../utils/themes';
-const Users = ['Shivgond', 'Sushant', 'Ajeya', 'Karthik', 'Kempya'];
-const MapUsers = (props: any) => {
-    const selectref: React.MutableRefObject<HTMLSelectElement> =
-        props.selectref;
-    return (
-        <select name="adds" ref={selectref} className={styles.select}>
-            {Users.map((el) => (
-                <option key={el} value={el}>
-                    {el}
-                </option>
-            ))}
-        </select>
-    );
-};
+import MapUsers from './MapUsers';
+import { useRouter } from 'next/router';
 
 const DivideEqually = () => {
+    const router = useRouter();
     const [user, setUser] = useState<string>('');
     const [splits, addSplits] = useState<Array<string>>([]);
     useEffect(() => {
@@ -29,7 +17,9 @@ const DivideEqually = () => {
     const processArray = (a: Array<string>) => {
         // @ts-ignore
         const newArr = [];
-        const share = parseInt(costRef.current.value) / splits.length;
+        const share = parseFloat(
+            (parseInt(costRef.current.value) / splits.length).toFixed(2)
+        );
         splits.forEach((el) => {
             newArr.push({
                 name: el,
@@ -43,18 +33,27 @@ const DivideEqually = () => {
     const costRef = useRef() as React.MutableRefObject<HTMLInputElement>;
     const selectRef = useRef() as React.MutableRefObject<HTMLSelectElement>;
     const dateRef = useRef() as React.MutableRefObject<HTMLInputElement>;
-    const handleSubmit = (e: SyntheticEvent) => {
+    const handleSubmit = async (e: SyntheticEvent) => {
         e.preventDefault();
 
         const expenseInfo = {
-            creater: user,
+            creator: user,
             title: titleRef.current.value,
             type: 'single',
             date: dateRef.current.value,
             cost: parseInt(costRef.current.value),
             breakup: processArray(splits),
+            paid: false,
         };
-        console.log(JSON.stringify(expenseInfo));
+        const res = await fetch('/api/expenses', {
+            method: 'POST',
+            body: JSON.stringify(expenseInfo),
+        });
+
+        if (res.status == 200) {
+            router.push('/');
+            // console.log(res, await res.body);
+        }
         //to database
     };
     const SplitHandler = (e: SyntheticEvent) => {

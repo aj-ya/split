@@ -1,25 +1,35 @@
 import { NextPage } from 'next';
 import { useState, useEffect } from 'react';
-import { MdCheck, MdCheckBox, MdCheckBoxOutlineBlank } from 'react-icons/md';
+import { IconContext } from 'react-icons';
+import {
+    MdArrowDropDown,
+    MdArrowDropUp,
+    MdCheck,
+    MdCheckBox,
+    MdCheckBoxOutlineBlank,
+    MdDeleteOutline,
+} from 'react-icons/md';
 import styles from '../../styles/ExpenseHistory.module.scss';
+import theme from '../../utils/themes';
 
 type ExpenseType = {
     expenseId: number;
-    creater: string;
+    creator: string;
     title: string;
     cost: number;
     type: string;
     date: string;
     paid: boolean;
     breakup: Array<{ name: string; payable: number }>;
+    _id: string;
 };
 const ExpenseHistory: NextPage = () => {
-    const [user, setUser] = useState<string>('');
     const [ExpenseData, setExpenseData] = useState<Array<ExpenseType>>([
         {
+            _id: '2131231241241g',
             expenseId: 231,
-            creater: 'ajeya',
-            title: 'asd',
+            creator: 'ajeya',
+            title: 'data_notLoaded',
             type: 'single',
             date: '2022-06-21',
             cost: 30,
@@ -29,52 +39,16 @@ const ExpenseHistory: NextPage = () => {
             ],
             paid: true,
         },
-        {
-            expenseId: 232,
-            creater: 'ajeya',
-            title: 'Summers',
-            type: 'bulk',
-            cost: 500,
-            date: '2022-06-14',
-            breakup: [
-                { name: 'Vishal', payable: 3000 },
-                { name: 'Pradeep', payable: 1500 },
-                { name: 'Sushant', payable: 3000 },
-            ],
-            paid: false,
-        },
-        {
-            expenseId: 231,
-            creater: 'ajeya',
-            title: 'Goa Trip',
-            type: 'single',
-            date: '2022-02-15',
-            cost: 12000,
-            breakup: [
-                { name: 'Shivgond', payable: 3000 },
-                { name: 'Sushant', payable: 3000 },
-                { name: 'Karthik', payable: 3000 },
-                { name: 'Kempya', payable: 3000 },
-            ],
-            paid: false,
-        },
-        {
-            expenseId: 231,
-            creater: 'ajeya',
-            title: 'Smoodh',
-            type: 'bulk',
-            cost: 12,
-            date: '2022-05-11',
-            breakup: [
-                { name: 'Ajeya', payable: 24 },
-                { name: 'Sushant', payable: 24 },
-                { name: 'Shivgond', payable: 12 },
-            ],
-            paid: true,
-        },
     ]);
+
     useEffect(() => {
-        setUser(localStorage.getItem('login') as string);
+        async function getDetails() {
+            const resE = await fetch(
+                `/api/expenses?user=${localStorage.getItem('login')}`
+            ).then((res) => res.json());
+            setExpenseData(resE);
+        }
+        getDetails();
     }, []);
     const ComputeTotalPrice = (props: { data: any }) => {
         const { data } = props;
@@ -97,28 +71,59 @@ const ExpenseHistory: NextPage = () => {
         //     console.log(txId);
         // };
         return (
-            <li
-                onClick={() => {
-                    setActiveItem(activeItem === itemKey ? 0 : itemKey);
-                }}
-                className={styles.listItem}
-            >
+            <li className={styles.listItem}>
                 <div className={styles.toprow}>
                     <div className={styles.title}>{data.title}</div>
-                    <div className={styles.date}>{data.date}</div>
+
                     <ComputeTotalPrice data={data} />
+                    <button
+                        className={styles.dropdown}
+                        onClick={() => {
+                            setActiveItem(activeItem === itemKey ? 0 : itemKey);
+                        }}
+                    >
+                        {activeItem !== itemKey ? (
+                            <MdArrowDropDown size="15px" />
+                        ) : (
+                            <MdArrowDropUp size="15px" />
+                        )}
+                    </button>
                 </div>
                 <div className={styles.lidesc} data-isactive={active}>
-                    {data.breakup.map(
-                        (el: { name: string; payable: number }) => (
-                            <span key={el.name} className={styles.breakupitem}>
-                                <span>{el.name}</span>:&nbsp;
-                                <span className={styles.payable}>
-                                    &#x20B9;{el.payable}
+                    <div className={styles.breakup}>
+                        {data.breakup.map(
+                            (el: { name: string; payable: number }) => (
+                                <span
+                                    key={el.name}
+                                    className={styles.breakupitem}
+                                >
+                                    <span>{el.name}</span>:&nbsp;
+                                    <span className={styles.payable}>
+                                        &#x20B9;{el.payable}
+                                    </span>
                                 </span>
-                            </span>
-                        )
-                    )}
+                            )
+                        )}
+                    </div>
+                    <IconContext.Provider
+                        value={{ size: '25px', color: theme.icon }}
+                    >
+                        <div className={styles.actionrow}>
+                            <div className={styles.date}>{data.date}</div>
+                            <div className={styles.actionButtons}>
+                                <button className={styles.button}>
+                                    <MdDeleteOutline />
+                                </button>
+                                <button className={styles.button}>
+                                    {data.paid ? (
+                                        <MdCheckBox />
+                                    ) : (
+                                        <MdCheckBoxOutlineBlank />
+                                    )}
+                                </button>
+                            </div>
+                        </div>
+                    </IconContext.Provider>
                 </div>
                 {/* <div>
                     {

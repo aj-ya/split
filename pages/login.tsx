@@ -3,28 +3,29 @@ import { useRouter } from 'next/router';
 import { SyntheticEvent, useRef, useState, useEffect } from 'react';
 import styles from '../styles/Login.module.scss';
 interface LoginData {
-    username: string;
-    password: string;
+    name: string;
+    pass: string;
 }
 const Login: NextPage = () => {
     const router = useRouter();
     const usernameRef = useRef() as React.MutableRefObject<HTMLInputElement>;
     const passwordRef = useRef() as React.MutableRefObject<HTMLInputElement>;
     const [userInfo, setUserInfo] = useState<LoginData>({
-        username: '',
-        password: '',
+        name: '',
+        pass: '',
     });
-    const handleSubmit = (e: SyntheticEvent) => {
+    const handleSubmit = async (e: SyntheticEvent) => {
         e.preventDefault();
         setUserInfo({
-            username: usernameRef.current.value,
-            password: passwordRef.current.value,
+            name: usernameRef.current.value,
+            pass: passwordRef.current.value,
         });
-        if (
-            usernameRef.current.value === 'ajeya' &&
-            passwordRef.current.value === 'ajeya'
-        ) {
-            localStorage.setItem('login', userInfo.username);
+        const res = await fetch('/api/login', {
+            method: 'POST',
+            body: JSON.stringify(userInfo),
+        }).then((res) => res.json());
+        if (res.present) {
+            localStorage.setItem('login', userInfo.name);
             router.push('/');
         }
     };
