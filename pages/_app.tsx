@@ -35,7 +35,7 @@ function MyApp({ Component, pageProps }: AppProps) {
                     <link rel="icon" href="/favicon.png" />
                     <link rel="manifest" href="/manifest.json" />
                     <link rel="apple-touch-icon" href="/favicon.png" />
-                    <link
+                    {/* <link
                         rel="apple-touch-startup-image"
                         media="screen and (device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)"
                         href="/splash_screens/12.9__iPad_Pro_landscape.png"
@@ -164,7 +164,7 @@ function MyApp({ Component, pageProps }: AppProps) {
                         rel="apple-touch-startup-image"
                         media="screen and (device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)"
                         href="/splash_screens/4__iPhone_SE__iPod_touch_5th_generation_and_later_portrait.png"
-                    />
+                    /> */}
                 </Head>
                 <MobileView>
                     <Component {...pageProps} />
