@@ -72,7 +72,7 @@ const Payments: NextPage = () => {
                                 data.title + ' ' + data.date
                             }&amp;tr=unique&amp;url=https://${
                                 window.location.host
-                            }/api/tranasactions?txid=${data._id}`}
+                            }/api/transactions?txid=${data._id}`}
                             className="upi-pay1"
                         >
                             Pay

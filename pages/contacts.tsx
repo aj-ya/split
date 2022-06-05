@@ -1,5 +1,4 @@
 import { NextPage } from 'next';
-import Head from 'next/head';
 import { IconContext } from 'react-icons';
 import { MdAccountCircle, MdAdd } from 'react-icons/md';
 import styles from '../styles/Contacts.module.scss';
