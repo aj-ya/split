@@ -175,6 +175,10 @@ function MyApp({ Component, pageProps }: AppProps) {
                         <MdPhoneAndroid size="60px" color={theme.head} />
                         <br />
                         <h1>Only mobile phones allowed.</h1>
+                        <strong>or</strong>
+                        <h3>
+                            Toggle to MobileView using DevTools and refresh!
+                        </h3>
                     </main>
                 </BrowserView>
             </Fragment>

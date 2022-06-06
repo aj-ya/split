@@ -17,6 +17,7 @@ export default async function handler(
                     creator: { $ne: req.query.user },
                     paid: { $in: [req.query.user] },
                 })
+                .find({ date: -1 })
                 .toArray();
             console.log(all_payments);
             all_payments = (await all_payments).map((el: any) => {

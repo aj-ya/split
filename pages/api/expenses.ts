@@ -31,6 +31,7 @@ export default async function handler(
                 .find({
                     creator: req.query.user,
                 })
+                .sort({ date: -1 })
                 .toArray();
             all_expenses = (await all_expenses).map((el: any) => {
                 return { ...el, _id: new ObjectId(el._id).toString() };
