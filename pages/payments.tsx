@@ -1,13 +1,6 @@
 import { NextPage } from 'next';
 import { useState, useEffect } from 'react';
-import {
-    MdArrowBack,
-    MdArrowForward,
-    MdCheck,
-    MdCheckBox,
-    MdCheckBoxOutlineBlank,
-    MdForward,
-} from 'react-icons/md';
+import { MdArrowForward } from 'react-icons/md';
 import styles from '../styles/Payments.module.scss';
 
 type PaymentTxType = {
