@@ -1,5 +1,5 @@
 <h1>sp<b>/</b>it</h1><span>&quot;Everything's better when <i>shared.</i>&quot;</span>
-<h5>split is a progressive web application aimed to help divide and track expenses among peers.</h5>
+<h5>split is a mobile-first progressive web application aimed to help divide and track expenses among peers.</h5>
 <h6>built using NextJS and MongoDB to deliver SSG,SSR and BSON storage.</h6>
 <h3><u>UI</u></h3>
 <div>Ispired by neumorphism.</div>
