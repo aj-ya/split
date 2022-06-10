@@ -20,7 +20,7 @@ type PaymentTxType = {
 };
 const createURI = (pa: string, pn: string, am: string, tn: string) => {
     let uri = `upi://pay?pa=${pa}&amp;pn=${pn}&amp;cu=INR&amp;`;
-    uri += `am=${am}&amp;tn=${tn}&amp;tr=2331`;
+    uri += `am=${parseFloat(am)}&amp;tn=${tn}&amp;tr=2331`;
     return uri;
 };
 const Payments: NextPage = () => {
