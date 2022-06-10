@@ -72,7 +72,7 @@ const Payments: NextPage = () => {
                                 (userData as any)[data.creator],
                                 data.creator,
                                 data.payable,
-                                data.title
+                                data.title + ' ' + data.date
                             )}
                             className="upi-pay1"
                         >
