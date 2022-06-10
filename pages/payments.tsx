@@ -18,6 +18,11 @@ type PaymentTxType = {
     payable: number;
     vpa: '';
 };
+const createURI = (pa: string, pn: string, am: string, tn: string) => {
+    let uri = `upi://pay?pa=${pa}&amp;pn=${pn}&amp;cu=INR&amp;`;
+    uri += `am=${am}&amp;tn=${tn}&amp;tr=2331`;
+    return uri;
+};
 const Payments: NextPage = () => {
     const handlePay = () => {};
     const [paymentData, setPaymentData] = useState<Array<PaymentTxType>>([]);
@@ -63,14 +68,12 @@ const Payments: NextPage = () => {
                     <button className={styles.payButton} onClick={handlePay}>
                         {/* <div>Pay</div> */}
                         <a
-                            href={`upi://pay?pa=${
-                                //@ts-ignore
-                                userData[data.creator]
-                            }&amp;pn=${data.creator}&amp;cu=INR&amp;am=${
-                                data.payable
-                            }&amp;tn=${
-                                data.title + '_' + data.date
-                            }&amp;tr=2331`}
+                            href={createURI(
+                                (userData as any)[data.creator],
+                                data.creator,
+                                data.payable,
+                                data.title
+                            )}
                             className="upi-pay1"
                         >
                             Pay
