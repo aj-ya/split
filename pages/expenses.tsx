@@ -1,8 +1,6 @@
 import { NextPage } from 'next';
-import { useRouter } from 'next/router';
 import styles from '../styles/Expenses.module.scss';
-import { useRef, useState, SyntheticEvent, useEffect } from 'react';
-import { MdAdd, MdCancel } from 'react-icons/md';
+import { useState } from 'react';
 import DivideEqually from '../components/Expenses/DivideEqually';
 import DivideByQuantity from '../components/Expenses/DivideByQuantity';
 

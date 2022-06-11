@@ -5,14 +5,8 @@ import Footer from '../components/Footer';
 import { useState, useEffect } from 'react';
 import Login from './login';
 import Head from 'next/head';
-import {
-    BrowserView,
-    MobileView,
-    isBrowser,
-    isMobile,
-} from 'react-device-detect';
-import { MdMobileFriendly, MdPhone, MdPhoneAndroid } from 'react-icons/md';
-import { IconContext } from 'react-icons';
+import { BrowserView, MobileView } from 'react-device-detect';
+import { MdPhoneAndroid } from 'react-icons/md';
 import theme from '../utils/themes';
 function MyApp({ Component, pageProps }: AppProps) {
     const [isLoggedIn, setLoggedIn] = useState(false);

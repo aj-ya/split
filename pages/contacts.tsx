@@ -1,6 +1,6 @@
 import { NextPage } from 'next';
 import { IconContext } from 'react-icons';
-import { MdAccountCircle, MdAdd } from 'react-icons/md';
+import { MdAccountCircle } from 'react-icons/md';
 import styles from '../styles/Contacts.module.scss';
 import theme from '../utils/themes';
 import { connectToDatabase } from '../lib/connectToDB';

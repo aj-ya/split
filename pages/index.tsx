@@ -11,7 +11,7 @@ import { AiOutlineLogout } from 'react-icons/ai';
 import { IconContext } from 'react-icons';
 import theme from '../utils/themes';
 import { useRouter } from 'next/router';
-import { useEffect } from 'react';
+
 const Home: NextPage = () => {
     const router = useRouter();
     return (

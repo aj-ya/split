@@ -1,3 +1,4 @@
+import { randomInt } from 'crypto';
 import { NextPage } from 'next';
 import { useState, useEffect } from 'react';
 import { MdArrowForward } from 'react-icons/md';
@@ -11,12 +12,29 @@ type PaymentTxType = {
     payable: number;
     vpa: '';
 };
+function makeid(length: number) {
+    var result = '';
+    var characters =
+        'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    var charactersLength = characters.length;
+    for (var i = 0; i < length; i++) {
+        result += characters.charAt(
+            Math.floor(Math.random() * charactersLength)
+        );
+    }
+    return result;
+}
+
 const createURI = (pa: string, pn: string, am: string, tn: string) => {
-    let uri = `upi://pay?pa=${pa}&amp;pn=${pn}&amp;cu=INR&amp;`;
-    uri += `am=${parseFloat(am)}&amp;tn=${tn}&amp;tr=2331`;
+    let tr = makeid(12);
+    let uri = `upi://pay?pa=${pa}&pn=${pn}&`;
+    uri += `am=${am}&tn=${tn}&tr=${tr}&cu=INR`;
     return uri;
 };
 const Payments: NextPage = () => {
+    interface StringMap {
+        [key: string]: string;
+    }
     const handlePay = () => {};
     const [paymentData, setPaymentData] = useState<Array<PaymentTxType>>([]);
     const [userData, setUsersData] = useState({});
@@ -28,9 +46,8 @@ const Payments: NextPage = () => {
             console.log(resP);
             setPaymentData(JSON.parse(resP).payments);
             const resU = await fetch('/api/users').then((res) => res.json());
-            const obj = {};
+            const obj: StringMap = {};
             resU.forEach((el: any) => {
-                //@ts-ignore
                 obj[el.name as string] = el.vpa || '';
             });
             setUsersData(obj);

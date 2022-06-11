@@ -2,10 +2,6 @@ import { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { SyntheticEvent, useRef, useState, useEffect } from 'react';
 import styles from '../styles/Login.module.scss';
-interface LoginData {
-    name: string;
-    pass: string;
-}
 const Login: NextPage = () => {
     const [isAuth, setAuth] = useState(false);
     const router = useRouter();
