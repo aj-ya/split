@@ -67,7 +67,7 @@ const Payments: NextPage = () => {
                                 (userData as any)[data.creator],
                                 data.creator,
                                 data.payable,
-                                paytn
+                                pay_tn
                             )}
                             className="upi-pay1"
                         >
