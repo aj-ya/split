@@ -39,6 +39,8 @@ const Payments: NextPage = () => {
     }, []);
     const ExpandableListItem = (props: any) => {
         const { activeItem, setActiveItem, itemKey, data, setData } = props;
+        const pay_tn = data.title.split(' ').join('_') + '_' + data.date;
+
         const active = activeItem === itemKey;
         // const handlePaid = (txId) => {
         //     console.log(txId);
@@ -65,7 +67,7 @@ const Payments: NextPage = () => {
                                 (userData as any)[data.creator],
                                 data.creator,
                                 data.payable,
-                                data.title + ' ' + data.date
+                                paytn
                             )}
                             className="upi-pay1"
                         >
