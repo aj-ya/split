@@ -1,6 +1,7 @@
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { SyntheticEvent, useRef, useState, useEffect } from 'react';
+import { MdArrowForward, MdArrowRight } from 'react-icons/md';
 import styles from '../styles/Login.module.scss';
 const Login: NextPage = () => {
     const [isAuth, setAuth] = useState(false);
@@ -44,7 +45,7 @@ const Login: NextPage = () => {
                     <input type="password" name="password" ref={passwordRef} />
                 </div>
                 <button className={styles.button} type="submit">
-                    &rarr;
+                    <MdArrowForward />
                 </button>
             </form>
         </main>
