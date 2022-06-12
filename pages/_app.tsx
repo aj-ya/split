@@ -1,6 +1,6 @@
 import '../styles/globals.scss';
 import type { AppProps } from 'next/app';
-import React, { Fragment, useContext } from 'react';
+import React, { FC, Fragment } from 'react';
 import Footer from '../components/Footer';
 import { useState, useEffect } from 'react';
 import Login from './login';
@@ -9,6 +9,22 @@ import { BrowserView, MobileView } from 'react-device-detect';
 import { MdPhoneAndroid } from 'react-icons/md';
 import theme from '../utils/themes';
 import Loader from '../components/Loader';
+
+const MainContent = (props: {
+    isLoggedIn: boolean;
+    Children: { Component: any; pageProps: any };
+}) => {
+    const isLoggedIn = props.isLoggedIn;
+    const { Component, pageProps } = props.Children;
+    if (isLoggedIn)
+        return (
+            <>
+                <Component {...pageProps} />
+                <Footer />
+            </>
+        );
+    else return <Login />;
+};
 
 function MyApp({ Component, pageProps }: AppProps) {
     const [loading, setLoading] = useState<boolean>(true);
@@ -22,7 +38,7 @@ function MyApp({ Component, pageProps }: AppProps) {
             setLoggedIn(true);
         }
         setLoading(false);
-    }, []);
+    });
     if (loading) return <Loader />;
     if (!isLoggedIn) return <Login />;
     else {
@@ -33,7 +49,7 @@ function MyApp({ Component, pageProps }: AppProps) {
                     <meta name="description" content="sp/it webapp" />
                     <link rel="icon" href="/favicon.png" />
                     <link rel="manifest" href="/manifest.json" />
-                    <link rel="apple-touch-icon" href="/favicon.png" />
+                    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
                     <link
                         rel="apple-touch-startup-image"
                         media="screen and (device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)"
@@ -166,8 +182,13 @@ function MyApp({ Component, pageProps }: AppProps) {
                     />
                 </Head>
                 <MobileView>
-                    <Component {...pageProps} />
-                    <Footer />
+                    <MainContent
+                        isLoggedIn={isLoggedIn}
+                        Children={{
+                            Component: Component,
+                            pageProps: pageProps,
+                        }}
+                    />
                 </MobileView>
                 <BrowserView>
                     <main className="container">
