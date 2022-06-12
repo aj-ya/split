@@ -72,6 +72,7 @@ const Payments: NextPage = () => {
                 </div>
                 <div className={styles.lidesc} data-isactive={active}>
                     <div className={styles.date}>{data.date}</div>
+                    <div className={styles.creator}>{data.creator}</div>
                     <button className={styles.payButton}>
                         {/* <div>Pay</div> */}
                         <a

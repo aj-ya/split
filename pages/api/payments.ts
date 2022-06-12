@@ -18,7 +18,7 @@ export default async function handler(
                     paid: { $nin: [req.query.user] },
                 })
                 .toArray();
-            console.log(all_payments);
+            // console.log(all_payments);
             all_payments = (await all_payments).map((el: any) => {
                 for (let i in el.breakup) {
                     // console.log(i);
