@@ -23,6 +23,7 @@ const Home: NextPage = () => {
                             className={styles.settings}
                             onClick={() => {
                                 localStorage.removeItem('login');
+                                router.push('/login');
                             }}
                         >
                             <AiOutlineLogout size="25px" />

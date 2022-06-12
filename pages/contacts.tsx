@@ -5,24 +5,50 @@ import styles from '../styles/Contacts.module.scss';
 import theme from '../utils/themes';
 import { connectToDatabase } from '../lib/connectToDB';
 import { ObjectId } from 'mongodb';
+import { useEffect, useState } from 'react';
 const MapContacts = (props: any) => {
     const { data } = props;
-
-    return (
-        <ul className={styles.list}>
-            {data.map((el: any) => {
-                return (
-                    <li className={styles.item} key={el.id}>
-                        <div className={styles.iconContainer}>
-                            <MdAccountCircle />
-                        </div>
-                        <h3 className={styles.name}>{el.name}</h3>
-                        <div className={styles.vpa}>{el.vpa}</div>
-                    </li>
-                );
-            })}
-        </ul>
-    );
+    const [isGuest, setGuest] = useState<boolean>(false);
+    useEffect(() => {
+        if (localStorage.getItem('login') == 'guest') setGuest(true);
+    }, []);
+    if (!isGuest)
+        return (
+            <ul className={styles.list}>
+                {data.map((el: any) => {
+                    return (
+                        <li className={styles.item} key={el.id}>
+                            <div className={styles.iconContainer}>
+                                <MdAccountCircle />
+                            </div>
+                            <h3 className={styles.name}>{el.name}</h3>
+                            <div className={styles.vpa}>{el.vpa}</div>
+                        </li>
+                    );
+                })}
+            </ul>
+        );
+    else {
+        const kk = [
+            { name: 'lorem', vpa: 'lorem@oksbi' },
+            { name: 'lorem', vpa: 'ipsum@oksbi' },
+        ];
+        return (
+            <ul className={styles.list}>
+                {kk.map((el: any) => {
+                    return (
+                        <li className={styles.item} key={el.id}>
+                            <div className={styles.iconContainer}>
+                                <MdAccountCircle />
+                            </div>
+                            <h3 className={styles.name}>{el.name}</h3>
+                            <div className={styles.vpa}>{el.vpa}</div>
+                        </li>
+                    );
+                })}
+            </ul>
+        );
+    }
 };
 
 const Contacts: NextPage = ({ all_users }: any) => {

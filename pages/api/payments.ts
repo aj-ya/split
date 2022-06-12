@@ -14,7 +14,7 @@ export default async function handler(
             let all_payments = await expeneses
                 .find({
                     breakup: { $elemMatch: { name: req.query.user } },
-                    creator: { $ne: req.query.user },
+                    creator: { $nin: [req.query.user, 'guest'] },
                     paid: { $nin: [req.query.user] },
                 })
                 .toArray();
