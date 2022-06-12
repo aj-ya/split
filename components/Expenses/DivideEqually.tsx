@@ -9,10 +9,12 @@ import {
     IndividualBreakup,
     NewExpenseObject,
     NewExpenseType,
+    UserObject,
 } from '../../utils/types';
 import Loader from '../Loader';
 
-const DivideEqually = () => {
+const DivideEqually = (props: { users: Array<UserObject> }) => {
+    const users = props.users;
     const router = useRouter();
     const [user, setUser] = useState<string>('');
     const [splits, addSplits] = useState<Array<string>>([]);
@@ -20,7 +22,6 @@ const DivideEqually = () => {
     const costRef = useRef() as React.MutableRefObject<HTMLInputElement>;
     const selectRef = useRef() as React.MutableRefObject<HTMLSelectElement>;
     const dateRef = useRef() as React.MutableRefObject<HTMLInputElement>;
-    const [loading, setLoading] = useState<boolean>(true);
     useEffect(() => {
         setUser(localStorage.getItem('login') as string);
     }, []);
@@ -96,80 +97,73 @@ const DivideEqually = () => {
         );
     };
     const date = new Date().toISOString().substring(0, 10);
-    // console.log(date);
-    if (!loading) {
-        return (
-            <IconContext.Provider value={{ size: '20px', color: theme.icon }}>
-                <form
-                    className={styles.formContainer}
-                    onSubmit={handleSubmit}
-                    autoComplete="off"
-                >
-                    <div className={styles.form}>
-                        <div className={styles.dateContainer}>
-                            <input
-                                className={styles.date}
-                                type="date"
-                                defaultValue={date}
-                                name="date"
-                                ref={dateRef}
-                                required
-                            />
-                        </div>
-                        <div className={styles.row}>
-                            <label htmlFor="title">Title</label>
-                        </div>
-                        <div className={styles.row}>
-                            <input
-                                type="text"
-                                name="title"
-                                ref={titleRef}
-                                required
-                            />
-                        </div>
-                        <div className={styles.row}>
-                            <label htmlFor="cost">Total Cost</label>
-                        </div>
-                        <div className={styles.row}>
-                            <input
-                                min="0"
-                                defaultValue="0"
-                                type="number"
-                                step="0.01"
-                                name="cost"
-                                ref={costRef}
-                                required
-                            />
-                        </div>
-                        <div className={styles.row}>
-                            <label htmlFor="adds">Add New Party</label>
-                        </div>
 
-                        <div className={styles.row}>
-                            <MapUsers
-                                selectref={selectRef}
-                                setloading={setLoading}
-                            />
-                            <button
-                                onClick={SplitHandler}
-                                className={styles.addButton}
-                            >
-                                <MdAdd />
-                            </button>
-                        </div>
+    return (
+        <IconContext.Provider value={{ size: '20px', color: theme.icon }}>
+            <form
+                className={styles.formContainer}
+                onSubmit={handleSubmit}
+                autoComplete="off"
+            >
+                <div className={styles.form}>
+                    <div className={styles.dateContainer}>
+                        <input
+                            className={styles.date}
+                            type="date"
+                            defaultValue={date}
+                            name="date"
+                            ref={dateRef}
+                            required
+                        />
                     </div>
-                    <MapSplits />
-                    <div className={styles.newrow}>
-                        <button className={styles.button} type="submit">
-                            <MdArrowForward />
+                    <div className={styles.row}>
+                        <label htmlFor="title">Title</label>
+                    </div>
+                    <div className={styles.row}>
+                        <input
+                            type="text"
+                            name="title"
+                            ref={titleRef}
+                            required
+                        />
+                    </div>
+                    <div className={styles.row}>
+                        <label htmlFor="cost">Total Cost</label>
+                    </div>
+                    <div className={styles.row}>
+                        <input
+                            min="0"
+                            defaultValue="0"
+                            type="number"
+                            step="0.01"
+                            name="cost"
+                            ref={costRef}
+                            required
+                        />
+                    </div>
+                    <div className={styles.row}>
+                        <label htmlFor="adds">Add New Party</label>
+                    </div>
+
+                    <div className={styles.row}>
+                        <MapUsers selectref={selectRef} users={users} />
+                        <button
+                            onClick={SplitHandler}
+                            className={styles.addButton}
+                        >
+                            <MdAdd />
                         </button>
                     </div>
-                </form>
-            </IconContext.Provider>
-        );
-    } else {
-        return <Loader />;
-    }
+                </div>
+                <MapSplits />
+                <div className={styles.newrow}>
+                    <button className={styles.button} type="submit">
+                        <MdArrowForward />
+                    </button>
+                </div>
+            </form>
+        </IconContext.Provider>
+    );
 };
 
 export default DivideEqually;

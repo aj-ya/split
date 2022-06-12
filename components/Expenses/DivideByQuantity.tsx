@@ -4,6 +4,7 @@ import {
     useRef,
     SyntheticEvent,
     ChangeEvent,
+    FC,
 } from 'react';
 import styles from '../../styles/Expenses.module.scss';
 import { MdAdd, MdArrowForward, MdClear } from 'react-icons/md';
@@ -16,11 +17,11 @@ import {
     NewExpenseObject,
     NewExpenseType,
     QuantityMap,
+    UserObject,
 } from '../../utils/types';
-import Loader from '../Loader';
 
-const DivideByQuantity = () => {
-    const [loading, setLoading] = useState<boolean>(true);
+const DivideByQuantity = (props: { users: Array<UserObject> }) => {
+    const users = props.users;
     const router = useRouter();
     const [user, setUser] = useState<string>('');
     const titleRef = useRef() as React.MutableRefObject<HTMLInputElement>;
@@ -120,77 +121,70 @@ const DivideByQuantity = () => {
         setUser(localStorage.getItem('login') as string);
     }, []);
     const date = new Date().toISOString().substring(0, 10);
-    if (!loading) {
-        return (
-            <IconContext.Provider value={{ size: '20px', color: theme.icon }}>
-                <form
-                    className={styles.formContainer}
-                    autoComplete="none"
-                    onSubmit={handleSubmit}
-                >
-                    <div className={styles.form}>
-                        <div className={styles.dateContainer}>
-                            <input
-                                type="date"
-                                defaultValue={date}
-                                name="date"
-                                ref={dateRef}
-                                required
-                                className={styles.date}
-                            />
-                        </div>
-                        <div className={styles.row}>
-                            <label htmlFor="title">Title</label>
-                        </div>
-                        <div className={styles.row}>
-                            <input
-                                type="text"
-                                name="title"
-                                required
-                                ref={titleRef}
-                            />
-                        </div>
-                        <div className={styles.row}>
-                            <label htmlFor="cost">Individual Cost</label>
-                        </div>
-                        <div className={styles.row}>
-                            <input
-                                required
-                                type="number"
-                                min="0"
-                                defaultValue="0"
-                                name="cost"
-                                ref={costRef}
-                            />
-                        </div>
-                        <div className={styles.row}>
-                            <label htmlFor="">Add New Party</label>
-                        </div>
-                        <div className={styles.row}>
-                            <MapUsers
-                                selectref={selectRef}
-                                setloading={setLoading}
-                            />
-                            <button
-                                onClick={SplitHandler}
-                                className={styles.addButton}
-                            >
-                                <MdAdd />
-                            </button>
-                        </div>
+    return (
+        <IconContext.Provider value={{ size: '20px', color: theme.icon }}>
+            <form
+                className={styles.formContainer}
+                autoComplete="none"
+                onSubmit={handleSubmit}
+            >
+                <div className={styles.form}>
+                    <div className={styles.dateContainer}>
+                        <input
+                            type="date"
+                            defaultValue={date}
+                            name="date"
+                            ref={dateRef}
+                            required
+                            className={styles.date}
+                        />
                     </div>
-                    <MapSplits />
-                    <div className={styles.newrow}>
-                        <button className={styles.button} type="submit">
-                            <MdArrowForward />
+                    <div className={styles.row}>
+                        <label htmlFor="title">Title</label>
+                    </div>
+                    <div className={styles.row}>
+                        <input
+                            type="text"
+                            name="title"
+                            required
+                            ref={titleRef}
+                        />
+                    </div>
+                    <div className={styles.row}>
+                        <label htmlFor="cost">Individual Cost</label>
+                    </div>
+                    <div className={styles.row}>
+                        <input
+                            required
+                            type="number"
+                            min="0"
+                            defaultValue="0"
+                            name="cost"
+                            ref={costRef}
+                        />
+                    </div>
+                    <div className={styles.row}>
+                        <label htmlFor="">Add New Party</label>
+                    </div>
+                    <div className={styles.row}>
+                        <MapUsers selectref={selectRef} users={users} />
+                        <button
+                            onClick={SplitHandler}
+                            className={styles.addButton}
+                        >
+                            <MdAdd />
                         </button>
                     </div>
-                </form>
-            </IconContext.Provider>
-        );
-    } else {
-        return <Loader />;
-    }
+                </div>
+                <MapSplits />
+                <div className={styles.newrow}>
+                    <button className={styles.button} type="submit">
+                        <MdArrowForward />
+                    </button>
+                </div>
+            </form>
+        </IconContext.Provider>
+    );
 };
 
 export default DivideByQuantity;
