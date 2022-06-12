@@ -5,7 +5,7 @@ import DivideEqually from '../components/Expenses/DivideEqually';
 import DivideByQuantity from '../components/Expenses/DivideByQuantity';
 import { UserObject } from '../utils/types';
 import Loader from '../components/Loader';
-
+import { DISABLE_GUEST_OP } from '../utils/guestOP';
 const Expenses: NextPage = () => {
     const [subPage, setSubPage] = useState(true);
     const [loading, setLoading] = useState<boolean>(true);
@@ -23,8 +23,16 @@ const Expenses: NextPage = () => {
         setLoading(false);
     }
     useEffect(() => {
-        if (localStorage.getItem('login') !== 'guest') getUsers();
-        else {setUsers([{name:'lorem',id:'1',_id:'12'},{name:'ipsum',id:'3',_id:'12123'}])
+        console.log('Guest Operations Disabled ?', DISABLE_GUEST_OP);
+        if (localStorage.getItem('login') == 'guest' && DISABLE_GUEST_OP) {
+            setUsers([
+                { name: 'lorem', id: '1', _id: '12' },
+                { name: 'ipsum', id: '3', _id: '12123' },
+            ]);
+            setLoading(false);
+        } else {
+            getUsers();
+        }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     if (!loading) {
