@@ -3,6 +3,7 @@
     "background_color": "#121212",
     "display": "standalone",
     "scope": "/",
+    "id": "/",
     "start_url": "/",
     "name": "split",
     "short_name": "split",
@@ -166,7 +167,8 @@
         },
         {
             "src": "windows11/Square44x44Logo.targetsize-32.png",
-            "sizes": "32x32"
+            "sizes": "32x32",
+            "purpose": "any maskable"
         },
         {
             "src": "windows11/Square44x44Logo.targetsize-36.png",
@@ -190,7 +192,8 @@
         },
         {
             "src": "windows11/Square44x44Logo.targetsize-64.png",
-            "sizes": "64x64"
+            "sizes": "64x64",
+            "purpose": "any maskable"
         },
         {
             "src": "windows11/Square44x44Logo.targetsize-72.png",
@@ -206,7 +209,8 @@
         },
         {
             "src": "windows11/Square44x44Logo.targetsize-256.png",
-            "sizes": "256x256"
+            "sizes": "256x256",
+            "purpose": "any maskable"
         },
         {
             "src": "windows11/Square44x44Logo.altform-unplated_targetsize-16.png",
@@ -330,7 +334,8 @@
         },
         {
             "src": "android/android-launchericon-512-512.png",
-            "sizes": "512x512"
+            "sizes": "512x512",
+            "purpose": "any maskable"
         },
         {
             "src": "android/android-launchericon-192-192.png",
@@ -350,11 +355,13 @@
         },
         {
             "src": "android/android-launchericon-48-48.png",
-            "sizes": "48x48"
+            "sizes": "48x48",
+            "purpose": "any maskable"
         },
         {
             "src": "ios/16.png",
-            "sizes": "16x16"
+            "sizes": "16x16",
+            "purpose": "any maskable"
         },
         {
             "src": "ios/20.png",
@@ -366,7 +373,8 @@
         },
         {
             "src": "ios/32.png",
-            "sizes": "32x32"
+            "sizes": "32x32",
+            "purpose": "any maskable"
         },
         {
             "src": "ios/40.png",
@@ -390,7 +398,8 @@
         },
         {
             "src": "ios/64.png",
-            "sizes": "64x64"
+            "sizes": "64x64",
+            "purpose": "any maskable"
         },
         {
             "src": "ios/72.png",
@@ -450,7 +459,8 @@
         },
         {
             "src": "ios/512.png",
-            "sizes": "512x512"
+            "sizes": "512x512",
+            "purpose": "any maskable"
         },
         {
             "src": "ios/1024.png",
