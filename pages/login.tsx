@@ -34,6 +34,7 @@ const Login: NextPage = () => {
         if (isAuth) {
             router.push('/');
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isAuth]);
     if (!loading) {
         return (
