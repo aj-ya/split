@@ -2,6 +2,9 @@
 <img src="/public/favicon.png" width="64px" height="64px" alt="favicon"/>
 <span >&quot;Everything's better when <i>shared.</i>&quot;</span>
 <h5>Split is a mobile-first progressive web application aimed to help divide and track expenses among peers. Built using NextJS and MongoDB, and hosted on vercel.</h5>
+<div>
+  guest credentials &rarr; <b><i>guest:guest</i></b>
+</div>
 <br/>
 <h3><u>A Neumorphic UI</u></h3>
 <div>
