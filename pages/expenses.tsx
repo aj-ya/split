@@ -23,7 +23,8 @@ const Expenses: NextPage = () => {
         setLoading(false);
     }
     useEffect(() => {
-        getUsers();
+        if (localStorage.getItem('login') !== 'guest') getUsers();
+        else {setUsers([{name:'lorem',id:'1',_id:'12'},{name:'ipsum',id:'3',_id:'12123'}])
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     if (!loading) {

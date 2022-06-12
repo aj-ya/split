@@ -31,7 +31,7 @@ const MapContacts = (props: any) => {
     else {
         const kk = [
             { name: 'lorem', vpa: 'lorem@oksbi' },
-            { name: 'lorem', vpa: 'ipsum@oksbi' },
+            { name: 'ipsum', vpa: 'ipsum@oksbi' },
         ];
         return (
             <ul className={styles.list}>

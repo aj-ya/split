@@ -11,8 +11,9 @@ export default async function handler(
     const expeneses = await db.collection('expenses');
     try {
         if (req.method == 'POST') {
-            console.log(JSON.parse(req.body));
-            await expeneses.insertOne(JSON.parse(req.body));
+            const BSONObject = JSON.parse(req.body);
+            if (BSONObject.creator !== 'guest')
+                await expeneses.insertOne(BSONObject);
             res.status(200).send('yes');
         }
         if (req.method == 'GET') {
