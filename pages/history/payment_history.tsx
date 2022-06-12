@@ -1,38 +1,33 @@
-import { copyFileSync } from 'fs';
 import { NextPage } from 'next';
-import { useState, useEffect } from 'react';
-import { IconContext } from 'react-icons';
-import { MdArrowForward } from 'react-icons/md';
+import { useState, useEffect, useContext } from 'react';
+import Loader from '../../components/Loader';
 import styles from '../../styles/ExpenseHistory.module.scss';
-import theme from '../../utils/themes';
+import { PaymentHistoryObject } from '../../utils/types';
 
-type PaymentTxType = {
-    _id: string;
-    creator: string;
-    title: string;
-    date: string;
-    payable: number;
-};
 const PaymentHistory: NextPage = () => {
-    const [paymentData, setPaymentData] = useState<Array<PaymentTxType>>([]);
-
+    const [paymentData, setPaymentData] = useState<Array<PaymentHistoryObject>>(
+        []
+    );
+    const [loading, setLoading] = useState(true);
     async function getDetails() {
-        const resE = await fetch(
-            `/api/paymentHistory?user=${localStorage.getItem('login')}`
-        ).then((res) => res.json());
-        console.log(resE);
-        setPaymentData(JSON.parse(resE).payments);
+        setLoading(true);
+        await fetch(`/api/paymentHistory?user=${localStorage.getItem('login')}`)
+            .then((res) => res.json())
+            .then((res) => {
+                setPaymentData(JSON.parse(res).payments);
+            })
+            .catch(() => {
+                setPaymentData([]);
+            });
+        setLoading(false);
     }
     useEffect(() => {
         getDetails();
-        console.log(paymentData);
     }, []);
     const ExpandableListItem = (props: any) => {
         const { activeItem, setActiveItem, itemKey, data, setData } = props;
         const active = activeItem === itemKey;
-        // const handlePaid = (txId) => {
-        //     console.log(txId);
-        // };
+
         return (
             <li
                 onClick={() => {
@@ -72,21 +67,24 @@ const PaymentHistory: NextPage = () => {
     };
 
     const [activeItem, setActiveItem] = useState(0);
-
-    return (
-        <div className={styles.container}>
-            <h2 className={styles.pagetitle}>Payment History</h2>
-            {paymentData.length > 0 ? (
-                <main className={styles.main}>
-                    <MapExpenses
-                        activeItem={activeItem}
-                        setActiveItem={setActiveItem}
-                    />
-                </main>
-            ) : (
-                <h3>None</h3>
-            )}
-        </div>
-    );
+    if (!loading) {
+        return (
+            <div className={styles.container}>
+                <h2 className={styles.pagetitle}>Payment History</h2>
+                {paymentData.length > 0 ? (
+                    <main className={styles.main}>
+                        <MapExpenses
+                            activeItem={activeItem}
+                            setActiveItem={setActiveItem}
+                        />
+                    </main>
+                ) : (
+                    <h3>None</h3>
+                )}
+            </div>
+        );
+    } else {
+        return <Loader />;
+    }
 };
 export default PaymentHistory;

@@ -2,15 +2,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { connectToDatabase } from '../../lib/connectToDB';
 import { ObjectId } from 'mongodb';
-type docType = {
-    name: string;
-    id: string;
-    _id: ObjectId;
-    vpa?: string;
-    password?: string;
-};
-// Call an external API endpoint to get posts.
-// You can use any data fetching library
+
 type usersType = {
     name: string;
     id: string;

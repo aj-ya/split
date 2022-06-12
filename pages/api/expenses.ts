@@ -3,17 +3,6 @@ import { ObjectId } from 'mongodb';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { connectToDatabase } from '../../lib/connectToDB';
 
-type ExpenseType = {
-    expenseId: number;
-    creator: string;
-    title: string;
-    cost: number;
-    type: string;
-    date: string;
-    paid: boolean;
-    breakup: Array<{ name: string; payable: number }>;
-};
-
 export default async function handler(
     req: NextApiRequest,
     res: NextApiResponse

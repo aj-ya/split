@@ -11,8 +11,16 @@ import { IconContext } from 'react-icons/lib';
 import theme from '../../utils/themes';
 import MapUsers from './MapUsers';
 import { useRouter } from 'next/router';
+import {
+    IndividualBreakup,
+    NewExpenseObject,
+    NewExpenseType,
+    QuantityMap,
+} from '../../utils/types';
+import Loader from '../Loader';
 
 const DivideByQuantity = () => {
+    const [loading, setLoading] = useState<boolean>(true);
     const router = useRouter();
     const [user, setUser] = useState<string>('');
     const titleRef = useRef() as React.MutableRefObject<HTMLInputElement>;
@@ -20,39 +28,36 @@ const DivideByQuantity = () => {
     const selectRef = useRef() as React.MutableRefObject<HTMLSelectElement>;
     const dateRef = useRef() as React.MutableRefObject<HTMLInputElement>;
     const [splits, addSplits] = useState<Array<string>>([]);
-    const [quantity, setQuantity] = useState({});
+    const [quantity, setQuantity] = useState<QuantityMap>({});
+
     const SplitHandler = (e: SyntheticEvent) => {
         e.preventDefault();
         const potential = selectRef.current.value;
         if (!splits.includes(potential)) {
             addSplits([...splits, potential]);
         }
-        // @ts-ignore
+
         quantity[potential] = 1;
         setQuantity(quantity);
         // console.log(quantity);
     };
     const handleSubmit = async (e: SyntheticEvent) => {
         e.preventDefault();
-        // @ts-ignore
-        const finalArray = [];
+        const finalArray: Array<IndividualBreakup> = [];
         Object.keys(quantity).forEach((el) => {
             finalArray.push({
                 name: el,
-                // @ts-ignore
                 payable: parseFloat(
-                    // @ts-ignore
                     (quantity[el] * parseInt(costRef.current.value)).toFixed(2)
                 ),
             });
         });
-        const finalData = {
+        const finalData: NewExpenseObject = {
             creator: user,
             title: titleRef.current.value,
-            type: 'bulk',
-            cost: parseInt(costRef.current.value),
+            type: NewExpenseType.bulk,
+            cost: parseFloat(costRef.current.value),
             date: dateRef.current.value,
-            // @ts-ignore
             breakup: finalArray,
             paid: [],
         };
@@ -67,8 +72,7 @@ const DivideByQuantity = () => {
     const QuantityHandler = (e: ChangeEvent<HTMLInputElement>) => {
         e.preventDefault();
         let prop = e.target.getAttribute('data-correspondsto') || 'ajeya';
-        // @ts-ignore
-        quantity[prop] = e.target.value || 0;
+        quantity[prop] = parseFloat(e.target.value) || 0;
         setQuantity(quantity);
         // console.log(quantity);
     };
@@ -86,7 +90,6 @@ const DivideByQuantity = () => {
                             onBlur={QuantityHandler}
                             type="number"
                             defaultValue={
-                                // @ts-ignore
                                 `${quantity[el] ? quantity[el] : '1'}` || '1'
                             }
                             step="0.1"
@@ -98,7 +101,6 @@ const DivideByQuantity = () => {
                             onClick={(e: SyntheticEvent) => {
                                 let curr = document.getElementById(el);
                                 let txt = (curr as any).innerText;
-                                // @ts-ignore
                                 delete quantity[txt];
                                 setQuantity(quantity);
                                 const result = splits.filter(
@@ -118,70 +120,77 @@ const DivideByQuantity = () => {
         setUser(localStorage.getItem('login') as string);
     }, []);
     const date = new Date().toISOString().substring(0, 10);
-    return (
-        <IconContext.Provider value={{ size: '20px', color: theme.icon }}>
-            <form
-                className={styles.formContainer}
-                autoComplete="none"
-                onSubmit={handleSubmit}
-            >
-                <div className={styles.form}>
-                    <div className={styles.dateContainer}>
-                        <input
-                            type="date"
-                            defaultValue={date}
-                            name="date"
-                            ref={dateRef}
-                            required
-                            className={styles.date}
-                        />
+    if (!loading) {
+        return (
+            <IconContext.Provider value={{ size: '20px', color: theme.icon }}>
+                <form
+                    className={styles.formContainer}
+                    autoComplete="none"
+                    onSubmit={handleSubmit}
+                >
+                    <div className={styles.form}>
+                        <div className={styles.dateContainer}>
+                            <input
+                                type="date"
+                                defaultValue={date}
+                                name="date"
+                                ref={dateRef}
+                                required
+                                className={styles.date}
+                            />
+                        </div>
+                        <div className={styles.row}>
+                            <label htmlFor="title">Title</label>
+                        </div>
+                        <div className={styles.row}>
+                            <input
+                                type="text"
+                                name="title"
+                                required
+                                ref={titleRef}
+                            />
+                        </div>
+                        <div className={styles.row}>
+                            <label htmlFor="cost">Individual Cost</label>
+                        </div>
+                        <div className={styles.row}>
+                            <input
+                                required
+                                type="number"
+                                min="0"
+                                defaultValue="0"
+                                name="cost"
+                                ref={costRef}
+                            />
+                        </div>
+                        <div className={styles.row}>
+                            <label htmlFor="">Add New Party</label>
+                        </div>
+                        <div className={styles.row}>
+                            <MapUsers
+                                selectref={selectRef}
+                                setloading={setLoading}
+                            />
+                            <button
+                                onClick={SplitHandler}
+                                className={styles.addButton}
+                            >
+                                <MdAdd />
+                            </button>
+                        </div>
                     </div>
-                    <div className={styles.row}>
-                        <label htmlFor="title">Title</label>
-                    </div>
-                    <div className={styles.row}>
-                        <input
-                            type="text"
-                            name="title"
-                            required
-                            ref={titleRef}
-                        />
-                    </div>
-                    <div className={styles.row}>
-                        <label htmlFor="cost">Individual Cost</label>
-                    </div>
-                    <div className={styles.row}>
-                        <input
-                            required
-                            type="number"
-                            min="0"
-                            defaultValue="0"
-                            name="cost"
-                            ref={costRef}
-                        />
-                    </div>
-                    <div className={styles.row}>
-                        <label htmlFor="">Add New Party</label>
-                    </div>
-                    <div className={styles.row}>
-                        <MapUsers selectref={selectRef} />
-                        <button
-                            onClick={SplitHandler}
-                            className={styles.addButton}
-                        >
-                            <MdAdd />
+                    <MapSplits />
+                    <div className={styles.newrow}>
+                        <button className={styles.button} type="submit">
+                            <MdArrowForward />
                         </button>
                     </div>
-                </div>
-                <MapSplits />
-                <div className={styles.newrow}>
-                    <button className={styles.button} type="submit">
-                        <MdArrowForward />
-                    </button>
-                </div>
-            </form>
-        </IconContext.Provider>
-    );
+                </form>
+            </IconContext.Provider>
+        );
+    } else {
+        return <Loader />;
+    }
 };
 
 export default DivideByQuantity;

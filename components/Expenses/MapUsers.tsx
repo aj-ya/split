@@ -1,22 +1,26 @@
 import { MutableRefObject, useEffect, useState } from 'react';
 import styles from '../../styles/Expenses.module.scss';
-type usersType = {
-    name: string;
-    id: string;
-    _id: string;
-    vpa?: string;
-    password?: string;
-}[];
+import { UserObject } from '../../utils/types';
+
 const MapUsers = (props: any) => {
     const selectref: MutableRefObject<HTMLSelectElement> = props.selectref;
-    const [users, setUsers] = useState<usersType>([]);
+    const setLoading = props.setloading;
+    const [users, setUsers] = useState<Array<UserObject>>([]);
+    async function getUsers() {
+        // setLoading(true);
+        await fetch('/api/users')
+            .then((res) => res.json())
+            .then((res) => {
+                setUsers(res);
+            })
+            .catch(() => {
+                setUsers([]);
+            });
+        setLoading(false);
+    }
     useEffect(() => {
-        async function getUsers() {
-            const res = await fetch('/api/users').then((res) => res.json());
-            console.log(res);
-            setUsers(res);
-        }
         getUsers();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     return (
         <select name="adds" ref={selectref} className={styles.select}>

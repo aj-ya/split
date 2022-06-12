@@ -1,6 +1,6 @@
 import '../styles/globals.scss';
 import type { AppProps } from 'next/app';
-import React, { Fragment } from 'react';
+import React, { Fragment, useContext } from 'react';
 import Footer from '../components/Footer';
 import { useState, useEffect } from 'react';
 import Login from './login';
@@ -8,17 +8,22 @@ import Head from 'next/head';
 import { BrowserView, MobileView } from 'react-device-detect';
 import { MdPhoneAndroid } from 'react-icons/md';
 import theme from '../utils/themes';
+import Loader from '../components/Loader';
+
 function MyApp({ Component, pageProps }: AppProps) {
+    const [loading, setLoading] = useState<boolean>(true);
     const [isLoggedIn, setLoggedIn] = useState(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(() => {
+        setLoading(true);
         if (!localStorage.getItem('login')) {
             setLoggedIn(false);
         } else {
             setLoggedIn(true);
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    });
+        setLoading(false);
+    }, []);
+    if (loading) return <Loader />;
     if (!isLoggedIn) return <Login />;
     else {
         return (
@@ -29,7 +34,7 @@ function MyApp({ Component, pageProps }: AppProps) {
                     <link rel="icon" href="/favicon.png" />
                     <link rel="manifest" href="/manifest.json" />
                     <link rel="apple-touch-icon" href="/favicon.png" />
-                    {/* <link
+                    <link
                         rel="apple-touch-startup-image"
                         media="screen and (device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)"
                         href="/splash_screens/12.9__iPad_Pro_landscape.png"
@@ -158,7 +163,7 @@ function MyApp({ Component, pageProps }: AppProps) {
                         rel="apple-touch-startup-image"
                         media="screen and (device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)"
                         href="/splash_screens/4__iPhone_SE__iPod_touch_5th_generation_and_later_portrait.png"
-                    /> */}
+                    />
                 </Head>
                 <MobileView>
                     <Component {...pageProps} />
@@ -175,6 +180,9 @@ function MyApp({ Component, pageProps }: AppProps) {
                         </h3>
                     </main>
                 </BrowserView>
+                <noscript>
+                    This page needs javascript for it to function.
+                </noscript>
             </Fragment>
         );
     }

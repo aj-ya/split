@@ -4,50 +4,33 @@ import { IconContext } from 'react-icons';
 import {
     MdArrowDropDown,
     MdArrowDropUp,
-    MdCheck,
     MdCheckBox,
     MdCheckBoxOutlineBlank,
     MdDeleteOutline,
 } from 'react-icons/md';
-import DivideByQuantity from '../../components/Expenses/DivideByQuantity';
+import Loader from '../../components/Loader';
 import styles from '../../styles/ExpenseHistory.module.scss';
 import theme from '../../utils/themes';
+import { ExpenseHistoryObject } from '../../utils/types';
 
-type ExpenseType = {
-    expenseId: number;
-    creator: string;
-    title: string;
-    cost: number;
-    type: string;
-    date: string;
-    paid: string[];
-    breakup: Array<{ name: string; payable: number }>;
-    _id: string;
-};
 const ExpenseHistory: NextPage = () => {
-    const [ExpenseData, setExpenseData] = useState<Array<ExpenseType>>([
-        {
-            _id: '2131231241241g',
-            expenseId: 231,
-            creator: 'ajeya',
-            title: 'data_notLoaded',
-            type: 'single',
-            date: '2022-06-21',
-            cost: 30,
-            breakup: [
-                { name: 'Shivgond', payable: 15 },
-                { name: 'Ajeya', payable: 15 },
-            ],
-            paid: ['shivgond'],
-        },
-    ]);
-
+    const [ExpenseData, setExpenseData] = useState<Array<ExpenseHistoryObject>>(
+        []
+    );
+    const [loading, setLoading] = useState<boolean>(true);
     async function getDetails() {
-        const resE = await fetch(
-            `/api/expenses?user=${localStorage.getItem('login')}`
-        ).then((res) => res.json());
-        setExpenseData(resE);
+        setLoading(true);
+        await fetch(`/api/expenses?user=${localStorage.getItem('login')}`)
+            .then((res) => res.json())
+            .then((res) => {
+                setExpenseData(res);
+            })
+            .catch(() => {
+                setExpenseData([]);
+            });
+        setLoading(false);
     }
+
     async function markPaid(txid: string, name: string) {
         const resM = await fetch(
             `/api/markPaid?tx_id=${txid}&name=${name}`
@@ -56,6 +39,7 @@ const ExpenseHistory: NextPage = () => {
             await getDetails();
         }
     }
+
     useEffect(() => {
         getDetails();
     }, []);
@@ -73,12 +57,10 @@ const ExpenseHistory: NextPage = () => {
             );
         }
     };
+
     const ExpandableListItem = (props: any) => {
         const { activeItem, setActiveItem, itemKey, data, setData } = props;
         const active = activeItem === itemKey;
-        // const handlePaid = (txId) => {
-        //     console.log(txId);
-        // };
         return (
             <li className={styles.listItem}>
                 <div className={styles.toprow}>
@@ -158,24 +140,6 @@ const ExpenseHistory: NextPage = () => {
                         </div>
                     </IconContext.Provider>
                 </div>
-                {/* <div>
-                    {
-                        <button
-                            className={styles.checkboxSim}
-                            onClick={() => {
-                                handlePaid(data.expenseId);
-                                data.paid = !data.paid;
-                                setExpenseData();
-                            }}
-                        >
-                            {data.paid ? (
-                                <MdCheckBox />
-                            ) : (
-                                <MdCheckBoxOutlineBlank />
-                            )}
-                        </button>
-                    }
-                </div>*/}
             </li>
         );
     };
@@ -198,25 +162,24 @@ const ExpenseHistory: NextPage = () => {
     };
 
     const [activeItem, setActiveItem] = useState(0);
-    return (
-        <div className={styles.container}>
-            <h2 className={styles.pagetitle}>Expense History</h2>
-            {ExpenseData.length > 0 ? (
-                <main className={styles.main}>
-                    <MapExpenses
-                        activeItem={activeItem}
-                        setActiveItem={setActiveItem}
-                    />
-                </main>
-            ) : (
-                <h3>None</h3>
-            )}
-            {/* <div className={styles.modal}>
-                <div className={styles.modalBox}>
-                    <h3 className={styles.modalTitle}>Are you sure?</h3>
-                </div>
-            </div> */}
-        </div>
-    );
+    if (!loading) {
+        return (
+            <div className={styles.container}>
+                <h2 className={styles.pagetitle}>Expense History</h2>
+                {ExpenseData.length > 0 ? (
+                    <main className={styles.main}>
+                        <MapExpenses
+                            activeItem={activeItem}
+                            setActiveItem={setActiveItem}
+                        />
+                    </main>
+                ) : (
+                    <h3>None</h3>
+                )}
+            </div>
+        );
+    } else {
+        return <Loader />;
+    }
 };
 export default ExpenseHistory;

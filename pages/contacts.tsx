@@ -7,6 +7,7 @@ import { connectToDatabase } from '../lib/connectToDB';
 import { ObjectId } from 'mongodb';
 const MapContacts = (props: any) => {
     const { data } = props;
+
     return (
         <ul className={styles.list}>
             {data.map((el: any) => {
@@ -23,6 +24,7 @@ const MapContacts = (props: any) => {
         </ul>
     );
 };
+
 const Contacts: NextPage = ({ all_users }: any) => {
     return (
         <div className="container">
@@ -30,11 +32,6 @@ const Contacts: NextPage = ({ all_users }: any) => {
                 <h2 className={styles.title}>Contacts.</h2>
                 <main className={styles.main}>
                     <MapContacts data={all_users} />
-                    {/* <div className={styles.addContainer}>
-                        <button className={styles.button}>
-                             <MdAdd /> 
-                        </button>
-                    </div> */}
                 </main>
             </IconContext.Provider>
         </div>
@@ -48,8 +45,7 @@ export async function getStaticProps() {
         vpa?: string;
         password?: string;
     };
-    // Call an external API endpoint to get posts.
-    // You can use any data fetching library
+
     const { db } = await connectToDatabase();
     const users = db.collection('users');
     const all_users_res = users.find();
@@ -68,8 +64,7 @@ export async function getStaticProps() {
             id: doc.id,
         });
     });
-    // By returning { props: { posts } }, the Blog component
-    // will receive `posts` as a prop at build time
+
     return {
         props: {
             all_users,
