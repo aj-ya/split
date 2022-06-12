@@ -41,6 +41,15 @@ function MyApp({ Component, pageProps }: AppProps) {
     });
     return (
         <Fragment>
+            <Head>
+                <title>Sp/it</title>
+                <meta name="description" content="sp/it webapp" />
+                <link rel="icon" href="/favicon.png" />
+                <link
+                    rel="preconnect"
+                    href="http://fonts.googleapis.com"
+                ></link>
+            </Head>
             {loading ? (
                 <Loader />
             ) : !isLoggedIn ? (
