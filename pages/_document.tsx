@@ -5,11 +5,15 @@ class MyDocument extends Document {
         return (
             <Html lang="en">
                 <Head>
-                    <link rel="manifest" href="/manifest.json" />
-                    <meta name="description" content="sp/it webapp" />
                     <link rel="icon" href="/favicon.png" />
                     <link rel="manifest" href="/manifest.json" />
-                    <link rel="apple-touch-icon" href="/favicon.png" />
+                    <meta name="theme-color" content="#75e6da" />
+                    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+                    {/* this sets the color of url bar in Apple smatphones --> */}
+                    <meta
+                        name="apple-mobile-web-app-status-bar"
+                        content="#75e6da"
+                    />
                 </Head>
                 <body>
                     <Main />
