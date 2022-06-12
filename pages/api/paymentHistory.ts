@@ -36,7 +36,7 @@ export default async function handler(
             res.status(200).json(JSON.stringify({ payments: all_payments }));
         }
     } catch (e) {
-        console.log(e);
+        // console.log(e);
         res.status(400).send({ payments: [{}] });
     }
 }

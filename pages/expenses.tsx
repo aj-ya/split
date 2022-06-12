@@ -61,9 +61,9 @@ const Expenses: NextPage = () => {
                         </span>
                     </div>
                     {subPage ? (
-                        <DivideEqually users={users} />
+                        <DivideEqually users={users} setload={setLoading} />
                     ) : (
-                        <DivideByQuantity users={users} />
+                        <DivideByQuantity users={users} setload={setLoading} />
                     )}
                 </main>
             </div>

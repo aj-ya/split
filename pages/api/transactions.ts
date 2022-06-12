@@ -14,7 +14,7 @@ export default async function handler(
         await transactions.insertOne({ tx_id: txid });
         res.status(200).json({ job: 'done.' });
     } catch (e) {
-        console.log(e);
+        // console.log(e);
         res.status(400).send({ payments: [{}] });
     }
 }

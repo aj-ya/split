@@ -1,5 +1,12 @@
 import styles from '../../styles/Expenses.module.scss';
-import { useRef, useState, SyntheticEvent, useEffect, useContext } from 'react';
+import {
+    useRef,
+    useState,
+    SyntheticEvent,
+    useEffect,
+    Dispatch,
+    SetStateAction,
+} from 'react';
 import { MdAdd, MdArrowForward, MdCancel } from 'react-icons/md';
 import { IconContext } from 'react-icons';
 import theme from '../../utils/themes';
@@ -11,10 +18,14 @@ import {
     NewExpenseType,
     UserObject,
 } from '../../utils/types';
-import Loader from '../Loader';
+import { DISABLE_GUEST_OP } from '../../utils/guestOP';
 
-const DivideEqually = (props: { users: Array<UserObject> }) => {
+const DivideEqually = (props: {
+    users: Array<UserObject>;
+    setload: Dispatch<SetStateAction<boolean>>;
+}) => {
     const users = props.users;
+    const setLoading = props.setload;
     const router = useRouter();
     const [user, setUser] = useState<string>('');
     const [splits, addSplits] = useState<Array<string>>([]);
@@ -22,9 +33,14 @@ const DivideEqually = (props: { users: Array<UserObject> }) => {
     const costRef = useRef() as React.MutableRefObject<HTMLInputElement>;
     const selectRef = useRef() as React.MutableRefObject<HTMLSelectElement>;
     const dateRef = useRef() as React.MutableRefObject<HTMLInputElement>;
+    const [isGuest, setGuest] = useState<boolean>(false);
     useEffect(() => {
         setUser(localStorage.getItem('login') as string);
     }, []);
+
+    useEffect(() => {
+        setGuest(user == 'guest');
+    }, [user]);
 
     const processArray = () => {
         const newArr: Array<IndividualBreakup> = [];
@@ -42,26 +58,29 @@ const DivideEqually = (props: { users: Array<UserObject> }) => {
 
     const handleSubmit = async (e: SyntheticEvent) => {
         e.preventDefault();
-
-        const expenseInfo: NewExpenseObject = {
-            creator: user,
-            title: titleRef.current.value,
-            type: NewExpenseType.single,
-            date: dateRef.current.value,
-            cost: parseInt(costRef.current.value),
-            breakup: processArray(),
-            paid: [],
-        };
-        const res = await fetch('/api/expenses', {
-            method: 'POST',
-            body: JSON.stringify(expenseInfo),
-        });
-
-        if (res.status == 200) {
-            router.push('/');
-            // console.log(res, await res.body);
+        if (!isGuest || !DISABLE_GUEST_OP) {
+            setLoading(true);
+            console.log('submitting...');
+            const expenseInfo: NewExpenseObject = {
+                creator: user,
+                title: titleRef.current.value,
+                type: NewExpenseType.single,
+                date: dateRef.current.value,
+                cost: parseInt(costRef.current.value),
+                breakup: processArray(),
+                paid: [],
+            };
+            await fetch('/api/expenses', {
+                method: 'POST',
+                body: JSON.stringify(expenseInfo),
+            }).then((res) => {
+                if (res.status == 200) {
+                    setLoading(false);
+                    router.push('/');
+                    // console.log(res, await res.body);
+                }
+            });
         }
-        //to database
     };
     const SplitHandler = (e: SyntheticEvent) => {
         e.preventDefault();
@@ -97,7 +116,6 @@ const DivideEqually = (props: { users: Array<UserObject> }) => {
         );
     };
     const date = new Date().toISOString().substring(0, 10);
-
     return (
         <IconContext.Provider value={{ size: '20px', color: theme.icon }}>
             <form

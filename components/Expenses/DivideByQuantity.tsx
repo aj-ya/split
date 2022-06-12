@@ -4,7 +4,8 @@ import {
     useRef,
     SyntheticEvent,
     ChangeEvent,
-    FC,
+    Dispatch,
+    SetStateAction,
 } from 'react';
 import styles from '../../styles/Expenses.module.scss';
 import { MdAdd, MdArrowForward, MdClear } from 'react-icons/md';
@@ -19,9 +20,14 @@ import {
     QuantityMap,
     UserObject,
 } from '../../utils/types';
+import { DISABLE_GUEST_OP } from '../../utils/guestOP';
 
-const DivideByQuantity = (props: { users: Array<UserObject> }) => {
+const DivideByQuantity = (props: {
+    users: Array<UserObject>;
+    setload: Dispatch<SetStateAction<boolean>>;
+}) => {
     const users = props.users;
+    const setLoading = props.setload;
     const router = useRouter();
     const [user, setUser] = useState<string>('');
     const titleRef = useRef() as React.MutableRefObject<HTMLInputElement>;
@@ -30,6 +36,7 @@ const DivideByQuantity = (props: { users: Array<UserObject> }) => {
     const dateRef = useRef() as React.MutableRefObject<HTMLInputElement>;
     const [splits, addSplits] = useState<Array<string>>([]);
     const [quantity, setQuantity] = useState<QuantityMap>({});
+    const [isGuest, setGuest] = useState<boolean>(false);
 
     const SplitHandler = (e: SyntheticEvent) => {
         e.preventDefault();
@@ -44,30 +51,38 @@ const DivideByQuantity = (props: { users: Array<UserObject> }) => {
     };
     const handleSubmit = async (e: SyntheticEvent) => {
         e.preventDefault();
-        const finalArray: Array<IndividualBreakup> = [];
-        Object.keys(quantity).forEach((el) => {
-            finalArray.push({
-                name: el,
-                payable: parseFloat(
-                    (quantity[el] * parseInt(costRef.current.value)).toFixed(2)
-                ),
+        if (!isGuest || !DISABLE_GUEST_OP) {
+            setLoading(true);
+            console.log('submitting...');
+            const finalArray: Array<IndividualBreakup> = [];
+            Object.keys(quantity).forEach((el) => {
+                finalArray.push({
+                    name: el,
+                    payable: parseFloat(
+                        (
+                            quantity[el] * parseInt(costRef.current.value)
+                        ).toFixed(2)
+                    ),
+                });
             });
-        });
-        const finalData: NewExpenseObject = {
-            creator: user,
-            title: titleRef.current.value,
-            type: NewExpenseType.bulk,
-            cost: parseFloat(costRef.current.value),
-            date: dateRef.current.value,
-            breakup: finalArray,
-            paid: [],
-        };
-        const res = await fetch('/api/expenses', {
-            method: 'POST',
-            body: JSON.stringify(finalData),
-        });
-        if (res.status == 200) {
-            router.push('/');
+            const finalData: NewExpenseObject = {
+                creator: user,
+                title: titleRef.current.value,
+                type: NewExpenseType.bulk,
+                cost: parseFloat(costRef.current.value),
+                date: dateRef.current.value,
+                breakup: finalArray,
+                paid: [],
+            };
+
+            const res = await fetch('/api/expenses', {
+                method: 'POST',
+                body: JSON.stringify(finalData),
+            });
+            if (res.status == 200) {
+                setLoading(false);
+                router.push('/');
+            }
         }
     };
     const QuantityHandler = (e: ChangeEvent<HTMLInputElement>) => {
@@ -120,6 +135,9 @@ const DivideByQuantity = (props: { users: Array<UserObject> }) => {
     useEffect(() => {
         setUser(localStorage.getItem('login') as string);
     }, []);
+    useEffect(() => {
+        setGuest(user === 'guest');
+    }, [user]);
     const date = new Date().toISOString().substring(0, 10);
     return (
         <IconContext.Provider value={{ size: '20px', color: theme.icon }}>

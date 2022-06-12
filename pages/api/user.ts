@@ -8,7 +8,7 @@ export default async function handler(
     res: NextApiResponse
 ) {
     const username = await req.query.user;
-    console.log(username);
+    // console.log(username);
     const { db } = await connectToDatabase();
     const users = await db.collection('users');
     let user = await users.find({ name: username }).toArray();

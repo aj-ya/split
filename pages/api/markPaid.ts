@@ -20,7 +20,7 @@ export default async function handler(
         await expenses.updateOne(myquery, newvalues[k === 0 ? 0 : 1]);
         res.status(200).json({ job: 'done.' });
     } catch (e) {
-        console.log(e);
+        // console.log(e);
         res.status(400).send({ payments: [{}] });
     }
 }
