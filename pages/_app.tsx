@@ -49,7 +49,13 @@ function MyApp({ Component, pageProps }: AppProps) {
                     <meta name="description" content="sp/it webapp" />
                     <link rel="icon" href="/favicon.png" />
                     <link rel="manifest" href="/manifest.json" />
+                    <meta name="theme-color" content="#75e6da" />
                     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+                    {/* this sets the color of url bar in Apple smatphones --> */}
+                    <meta
+                        name="apple-mobile-web-app-status-bar"
+                        content="#75e6da"
+                    />
                     <link
                         rel="apple-touch-startup-image"
                         media="screen and (device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)"
