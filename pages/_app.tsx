@@ -45,8 +45,6 @@ function MyApp({ Component, pageProps }: AppProps) {
             <Head>
                 <title>Sp/it</title>
                 <meta name="description" content="sp/it webapp" />
-                <link rel="icon" href="/favicon.png" />
-                <link rel="preconnect" href="https://fonts.googleapis.com/" />
             </Head>
             <MobileView>
                 <MainContent
