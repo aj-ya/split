@@ -256,6 +256,7 @@
     margin-top: 10px;
     padding: 5px;
     border-radius: 150px;
+
     // background: #121212;
     // box-shadow: 30px 30px 60px #070707, -30px -30px 60px #1d1d1d;
     .exoptionSingle {
@@ -285,11 +286,13 @@
     &[data-current='Single'] {
         .exoptionSingle {
             border: 3px solid th.$head;
+            transition: 0.2s;
         }
     }
     &[data-current='Bulk'] {
         .exoptionBulk {
             border: 3px solid th.$head;
+            transition: 0.2s;
         }
     }
 }
