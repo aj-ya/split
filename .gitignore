@@ -47,6 +47,6 @@ yarn-error.log*
 **/public/sw.js.map
 **/public/workbox-*.js.map
 **/public/worker-*.js.map
-
+**/public/fallback-*.js
 #pwa-links
 **/pages/__link__.txt
