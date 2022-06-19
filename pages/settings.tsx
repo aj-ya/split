@@ -1,12 +1,18 @@
 import { NextPage } from 'next';
-import logo from '../public/favicon.png';
 import Image from 'next/image';
+import { FormEvent, FormEventHandler } from 'react';
 const Settings: NextPage = () => {
+    const handleSubmit: FormEventHandler = (e: FormEvent) => {
+        e.preventDefault();
+    };
     return (
         <div className="container">
-            <div className="imageContainer">
-                <Image src={logo} alt="logo"></Image>
-            </div>
+            <form onSubmit={handleSubmit}>
+                <label htmlFor="vpa">Virtual Payment Address.</label>
+                <input type="text" name="vpa" />
+                <label htmlFor="pass">Password</label>
+                <input type="text" name="pass" />
+            </form>
         </div>
     );
 };
