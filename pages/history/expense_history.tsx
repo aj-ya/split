@@ -55,7 +55,7 @@ const ExpenseHistory: NextPage = () => {
         }
         return (
             <div className={styles.totalPrice}>
-                &#8377; {parseFloat(totalPrice).toFixed(2)}
+                &#8377; {totalPrice.toFixed(2)}
             </div>
         );
     };
