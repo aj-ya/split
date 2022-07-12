@@ -45,21 +45,19 @@ const ExpenseHistory: NextPage = () => {
     }, []);
     const ComputeTotalPrice = (props: { data: any }) => {
         const { data } = props;
+        let totalPrice = 0;
         if (data.type === 'single') {
-            return (
-                <div className={styles.totalPrice}>
-                    &#8377; {parseFloat(data.cost).toFixed(2)}
-                </div>
-            );
+            totalPrice = data.cost;
         } else {
-            let totalPrice = 0;
             data.breakup.forEach((el: { name: string; payable: number }) => {
                 totalPrice += el.payable;
             });
-            return (
-                <div className={styles.totalPrice}>&#8377; {totalPrice}</div>
-            );
         }
+        return (
+            <div className={styles.totalPrice}>
+                &#8377; {parseFloat(data.cost).toFixed(2)}
+            </div>
+        );
     };
 
     const ExpandableListItem = (props: any) => {
