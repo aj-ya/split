@@ -46,7 +46,11 @@ const ExpenseHistory: NextPage = () => {
     const ComputeTotalPrice = (props: { data: any }) => {
         const { data } = props;
         if (data.type === 'single') {
-            return <div className={styles.totalPrice}>&#8377; {data.cost}</div>;
+            return (
+                <div className={styles.totalPrice}>
+                    &#8377; {parseFloat(data.cost).toFixed(2)}
+                </div>
+            );
         } else {
             let totalPrice = 0;
             data.breakup.forEach((el: { name: string; payable: number }) => {
