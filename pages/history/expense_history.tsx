@@ -92,7 +92,7 @@ const ExpenseHistory: NextPage = () => {
                                     >
                                         <span>{el.name}</span>:&nbsp;
                                         <span className={styles.payable}>
-                                            &#x20B9;{el.payable}
+                                            &#x20B9;{el.payable.toFixed(2)}
                                         </span>
                                         <button
                                             onClick={() => {
