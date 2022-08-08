@@ -50,9 +50,11 @@ const ExpenseHistory: NextPage = () => {
             totalPrice = data.cost;
         } else {
             data.breakup.forEach((el: { name: string; payable: number }) => {
+                // console.log(el.payable);
                 totalPrice += el.payable;
             });
         }
+        console.log(totalPrice);
         return (
             <div className={styles.totalPrice}>
                 &#8377; {totalPrice.toFixed(2)}
