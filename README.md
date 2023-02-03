@@ -17,4 +17,3 @@
   <img src="/assets/screenshots/payments.png" alt="payments" width="30%" style="border-radius:10px"/>
 </div>
 <br/>
-
