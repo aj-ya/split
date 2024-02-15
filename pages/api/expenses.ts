@@ -12,9 +12,12 @@ export default async function handler(
     try {
         if (req.method == 'POST') {
             const BSONObject = JSON.parse(req.body);
-            if (BSONObject.creator !== 'guest')
-                await expeneses.insertOne(BSONObject);
-            res.status(200).send('yes');
+            if (BSONObject.creator !== 'guest') {
+                const create_res = await expeneses.insertOne(BSONObject);
+                console.log(create_res.insertedId.toJSON());
+                res.status(200).send({ id: create_res.insertedId.id });
+            }
+            res.status(400).json('cant create on guest');
         }
         if (req.method == 'GET') {
             let all_expenses = await expeneses

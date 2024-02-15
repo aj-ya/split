@@ -55,7 +55,9 @@ const DivideByQuantity = (props: {
             setLoading(true);
             console.log('submitting...');
             const finalArray: Array<IndividualBreakup> = [];
+            let addUsersPartAsPaid = false;
             Object.keys(quantity).forEach((el) => {
+                if (el == user) addUsersPartAsPaid = true;
                 finalArray.push({
                     name: el,
                     payable: parseFloat(
@@ -72,7 +74,7 @@ const DivideByQuantity = (props: {
                 cost: parseFloat(costRef.current.value),
                 date: dateRef.current.value,
                 breakup: finalArray,
-                paid: [],
+                paid: addUsersPartAsPaid ? [user] : [],
             };
 
             const res = await fetch('/api/expenses', {
@@ -81,7 +83,8 @@ const DivideByQuantity = (props: {
             });
             if (res.status == 200) {
                 setLoading(false);
-                router.push('/');
+
+                // router.push('/');
             }
         }
     };
@@ -185,7 +188,11 @@ const DivideByQuantity = (props: {
                         <label htmlFor="">Add New Party</label>
                     </div>
                     <div className={styles.row}>
-                        <MapUsers selectref={selectRef} users={users} />
+                        <MapUsers
+                            selectRef={selectRef}
+                            users={users}
+                            currentUserName={user}
+                        />
                         <button
                             onClick={SplitHandler}
                             className={styles.addButton}

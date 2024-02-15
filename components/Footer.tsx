@@ -10,7 +10,7 @@ const Footer = () => {
             <IconContext.Provider value={{ color: theme.icon, size: '35px' }}>
                 <div className={styles.pages}>
                     <div data-isactive="false">
-                        <Link href="/expenses">
+                        <Link href="/expense">
                             <MdRequestPage />
                         </Link>
                     </div>

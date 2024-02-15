@@ -17,6 +17,11 @@ const ExpenseHistory: NextPage = () => {
     const [ExpenseData, setExpenseData] = useState<Array<ExpenseHistoryObject>>(
         []
     );
+    const [user, setUser] = useState<string>('');
+    useEffect(() => {
+        setUser(localStorage.getItem('login') as string);
+    }, []);
+
     const [loading, setLoading] = useState<boolean>(true);
     async function getDetails() {
         setLoading(true);
@@ -63,7 +68,8 @@ const ExpenseHistory: NextPage = () => {
     };
 
     const ExpandableListItem = (props: any) => {
-        const { activeItem, setActiveItem, itemKey, data, setData } = props;
+        const { activeItem, setActiveItem, itemKey, data, setData, user } =
+            props;
         const active = activeItem === itemKey;
         return (
             <li className={styles.listItem}>
@@ -94,22 +100,29 @@ const ExpenseHistory: NextPage = () => {
                                         key={el.name}
                                         className={styles.breakupitem}
                                     >
-                                        <span>{el.name}</span>:&nbsp;
+                                        <span>
+                                            {el.name === user ? 'me' : el.name}
+                                        </span>
+                                        :&nbsp;
                                         <span className={styles.payable}>
                                             &#x20B9;{el.payable.toFixed(2)}
                                         </span>
-                                        <button
-                                            onClick={() => {
-                                                markPaid(data._id, el.name);
-                                            }}
-                                            className={`${styles.button} ${styles.checkboxbutton}`}
-                                        >
-                                            {data.paid.includes(el.name) ? (
-                                                <MdCheckBox />
-                                            ) : (
-                                                <MdCheckBoxOutlineBlank />
-                                            )}
-                                        </button>
+                                        {el.name === user ? (
+                                            <MdCheckBox />
+                                        ) : (
+                                            <button
+                                                onClick={() => {
+                                                    markPaid(data._id, el.name);
+                                                }}
+                                                className={`${styles.button} ${styles.checkboxbutton}`}
+                                            >
+                                                {data.paid.includes(el.name) ? (
+                                                    <MdCheckBox />
+                                                ) : (
+                                                    <MdCheckBoxOutlineBlank />
+                                                )}
+                                            </button>
+                                        )}
                                     </span>
                                 )
                             )}
@@ -173,6 +186,7 @@ const ExpenseHistory: NextPage = () => {
                 {ExpenseData.length > 0 ? (
                     <main className={styles.main}>
                         <MapExpenses
+                            user={user}
                             activeItem={activeItem}
                             setActiveItem={setActiveItem}
                         />

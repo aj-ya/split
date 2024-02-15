@@ -36,7 +36,7 @@ const Nav = () => {
                         </Link>
                     </div>
                     <div>
-                        <Link href="/expenses">
+                        <Link href="/expense">
                             <MdHistoryEdu />
                         </Link>
                     </div>

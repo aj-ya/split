@@ -23,8 +23,8 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    "pages/api/mongodb.js",
-    "lib/connectToDB.js"
+    "pages/api/mongodb.ts",
+    "lib/connectToDB.ts"
   ],
   "exclude": [
     "node_modules"

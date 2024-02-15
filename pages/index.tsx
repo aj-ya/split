@@ -41,10 +41,10 @@ const Home: NextPage = () => {
                         <div
                             className={styles.gridBox}
                             onClick={() => {
-                                router.push('/expenses');
+                                router.push('/expense');
                             }}
                         >
-                            <div className={styles.boxTitle}>Expenses</div>
+                            <div className={styles.boxTitle}>Add Expense</div>
                             <div className={styles.icon}>
                                 <MdRequestPage />
                             </div>

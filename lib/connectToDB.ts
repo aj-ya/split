@@ -1,11 +1,12 @@
-import { MongoClient, ServerApiVersion } from 'mongodb';
-const uri = process.env.MONGODB_URI;
-// console.log(uri);
-if (!uri) {
+import { MongoClient, Db, ServerApiVersion } from 'mongodb';
+if (!process.env.MONGODB_URI) {
     throw new Error('Define the MONGODB_URI environmental variable');
 }
-let cachedClient = null;
-let cachedDb = null;
+const uri: string = process.env.MONGODB_URI;
+// console.log(uri);
+
+let cachedClient: MongoClient | null = null;
+let cachedDb: Db | null = null;
 export async function connectToDatabase() {
     // check the cached.
     if (cachedClient && cachedDb) {

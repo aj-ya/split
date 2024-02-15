@@ -42,42 +42,41 @@ const DivideEqually = (props: {
         setGuest(user == 'guest');
     }, [user]);
 
-    const processArray = () => {
-        const newArr: Array<IndividualBreakup> = [];
-        const share = parseFloat(
-            (parseInt(costRef.current.value) / splits.length).toFixed(2)
-        );
-        splits.forEach((el) => {
-            newArr.push({
-                name: el,
-                payable: share,
-            });
-        });
-        return newArr;
-    };
 
     const handleSubmit = async (e: SyntheticEvent) => {
         e.preventDefault();
         if (!isGuest || !DISABLE_GUEST_OP) {
             setLoading(true);
             console.log('submitting...');
+            let addUsersPartAsPaid = false;
+            const newArr: Array<IndividualBreakup> = [];
+            const share = parseFloat(
+                (parseInt(costRef.current.value) / splits.length).toFixed(2)
+            );
+            splits.forEach((el) => {
+                if (el == user) addUsersPartAsPaid = true;
+                newArr.push({
+                    name: el,
+                    payable: share,
+                });
+            });
             const expenseInfo: NewExpenseObject = {
                 creator: user,
                 title: titleRef.current.value,
                 type: NewExpenseType.single,
                 date: dateRef.current.value,
                 cost: parseInt(costRef.current.value),
-                breakup: processArray(),
-                paid: [],
+                breakup: newArr,
+                paid: addUsersPartAsPaid ? [user] : [],
             };
             await fetch('/api/expenses', {
                 method: 'POST',
                 body: JSON.stringify(expenseInfo),
-            }).then((res) => {
+            }).then(async (res) => {
                 if (res.status == 200) {
                     setLoading(false);
-                    router.push('/');
-                    // console.log(res, await res.body);
+
+                    // router.push('/');
                 }
             });
         }
@@ -164,7 +163,11 @@ const DivideEqually = (props: {
                     </div>
 
                     <div className={styles.row}>
-                        <MapUsers selectref={selectRef} users={users} />
+                        <MapUsers
+                            selectRef={selectRef}
+                            users={users}
+                            currentUserName={user}
+                        />
                         <button
                             onClick={SplitHandler}
                             className={styles.addButton}
