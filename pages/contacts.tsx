@@ -64,14 +64,6 @@ const Contacts: NextPage = ({ all_users }: any) => {
     );
 };
 export async function getStaticProps() {
-    type docType = {
-        name: string;
-        id: string;
-        _id: ObjectId;
-        vpa?: string;
-        password?: string;
-    };
-
     const { db } = await connectToDatabase();
     const users = db.collection('users');
     const all_users_res = users.find();
@@ -82,7 +74,7 @@ export async function getStaticProps() {
         vpa?: string;
         password?: string;
     }[] = [];
-    await all_users_res.forEach((doc: docType) => {
+    all_users_res.forEach((doc) => {
         all_users.push({
             _id: new ObjectId(doc._id).toString(),
             name: doc.name,

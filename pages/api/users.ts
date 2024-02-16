@@ -3,23 +3,22 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import { connectToDatabase } from '../../lib/connectToDB';
 import { ObjectId } from 'mongodb';
 
-type usersType = {
+type UserType = {
     name: string;
     id: string;
     _id: string;
     vpa?: string;
     pass?: string;
-}[];
+};
 export default async function handler(
     req: NextApiRequest,
-    res: NextApiResponse<usersType>
+    res: NextApiResponse<UserType[]>
 ) {
     const { db } = await connectToDatabase();
-    const users = await db.collection('users');
-    let all_users = users.find().toArray();
-    all_users = (await all_users).map((el: any) => {
-        delete el.pass;
-        return { ...el, _id: new ObjectId(el._id).toString() };
+    const users = db.collection<UserType>('users');
+    const all_users = await users.find().toArray();
+    const all_user_ids = all_users.map((el) => {
+        return { ...el, pass: undefined, _id: new ObjectId(el._id).toString() };
     });
-    res.status(200).json(all_users);
+    res.status(200).json(all_user_ids);
 }
